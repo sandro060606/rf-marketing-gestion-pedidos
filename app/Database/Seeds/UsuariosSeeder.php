@@ -1,0 +1,105 @@
+<?php
+
+namespace App\Database\Seeds;
+
+use CodeIgniter\Database\Seeder;
+
+class UsuariosSeeder extends Seeder
+{
+    public function run()
+    {
+        $data = [
+            [
+                'nombre'        => 'FABIANA',
+                'apellidos'     => 'TASAYCO HUACCAMAYTA',
+                'correo'        => 'tasaycofab26@gmail.com',
+                'tipodoc'       => 'DNI',
+                'numerodoc'     => '74890091',
+                'usuario'       => 'ftasayco_rf',
+                'clave'         => 'rf_74890091',
+                'rol'           => 'administrador',
+                'idarea'        => null,
+                'esresponsable' => false,
+                'estado'        => true,
+            ],
+            [
+                'nombre'        => 'SONIA ALEJANDRA',
+                'apellidos'     => 'TELLO ROJAS',
+                'correo'        => 'satrsonia@gmail.com',
+                'tipodoc'       => 'DNI',
+                'numerodoc'     => '49049820',
+                'usuario'       => 'stello_rf',
+                'clave'         => 'rf_49049820',
+                'rol'           => 'empleado',
+                'idarea'        => 2,
+                'esresponsable' => false,
+                'estado'        => true,
+            ],
+            [
+                'nombre'        => 'JOSE',
+                'apellidos'     => 'GUERRA CHACÓN',
+                'correo'        => 'isaichachon695@gmail.com',
+                'tipodoc'       => 'DNI',
+                'numerodoc'     => '75187044',
+                'usuario'       => 'jguerra_rf',
+                'clave'         => 'rf_75187044',
+                'rol'           => 'empleado',
+                'idarea'        => 2,
+                'esresponsable' => false,
+                'estado'        => true,
+            ],[
+                'nombre'        => 'JONATHAN',
+                'apellidos'     => 'MEDINA CAMPOS',
+                'correo'        => 'paratodoslados.2025@gmail.com',
+                'tipodoc'       => 'DNI',
+                'numerodoc'     => '72324643',
+                'usuario'       => 'jmedina_rf',
+                'clave'         => 'rf_72324643',
+                'rol'           => 'empleado',
+                'idarea'        => 2,
+                'esresponsable' => true,
+                'estado'        => true,
+            ],
+            [
+                'nombre'        => 'FABRIZIO',
+                'apellidos'     => 'RAMOS TIPISMANA',
+                'correo'        => 'fabrz1rt13@gmail.com',
+                'tipodoc'       => 'DNI',
+                'numerodoc'     => '75832420',
+                'usuario'       => 'framos_rf',
+                'clave'         => 'rf_75832420',
+                'rol'           => 'empleado',
+                'idarea'        => 1,
+                'esresponsable' => false,
+                'estado'        => true,
+            ],
+            [
+                'nombre'        => 'NAYRU',
+                'apellidos'     => 'GOMEZ MAGALLANES',
+                'correo'        => 'magallanesnayru@gmail.com',
+                'tipodoc'       => 'DNI',
+                'numerodoc'     => '71992007',
+                'usuario'       => 'ngomez_rf',
+                'clave'         => 'rf_71992007',
+                'rol'           => 'empleado',
+                'idarea'        => 1,
+                'esresponsable' => false,
+                'estado'        => true,
+            ],
+            [
+                'nombre'        => 'JESUS',
+                'apellidos'     => 'DE LA CRUZ GARCÍA',
+                'correo'        => 'gabrieljesusdelacruzgarcia@gmail.com',
+                'tipodoc'       => 'DNI',
+                'numerodoc'     => '73009277',
+                'usuario'       => 'jdelacruz_rf',
+                'clave'         => 'rf_73009277',
+                'rol'           => 'empleado',
+                'idarea'        => 1,
+                'esresponsable' => true,
+                'estado'        => true,
+            ]
+        ];
+        $this->db->table('usuarios')->insertBatch($data);
+    }
+}

@@ -7,7 +7,10 @@ use CodeIgniter\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     public function run()
-    {
+    {   
+        /* Orden de Ejecucion de las Semillas */
         $this->call(AreasSeeder::class);
+        $this->call(UsuariosSeeder::class);
+
     }
 }
