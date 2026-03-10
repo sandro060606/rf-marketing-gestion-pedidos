@@ -98,7 +98,34 @@ class UsuariosSeeder extends Seeder
                 'idarea'        => 1,
                 'esresponsable' => true,
                 'estado'        => true,
-            ]
+            ],
+            //Clientes Prueba
+            [
+                'nombre'        => 'ANA',
+                'apellidos'     => 'FLORES QUISPE',
+                'correo'        => '62345678@uai.edu.pe',
+                'tipodoc'       => 'DNI',
+                'numerodoc'     => '62345678',
+                'usuario'       => 'aflores_rf',
+                'clave'         => 'rf_62345678',
+                'rol'           => 'cliente',
+                'idarea'        => null,
+                'esresponsable' => false,
+                'estado'        => true,
+            ],
+            [
+                'nombre'        => 'LUIS',
+                'apellidos'     => 'MENDOZA RIVAS',
+                'correo'        => '62345678@byron.edu.pe',
+                'tipodoc'       => 'DNI',
+                'numerodoc'     => '63456789',
+                'usuario'       => 'lmendoza_rf',
+                'clave'         => 'rf_63456789',
+                'rol'           => 'cliente',
+                'idarea'        => null,
+                'esresponsable' => false,
+                'estado'        => true,
+            ],
         ];
         $this->db->table('usuarios')->insertBatch($data);
     }

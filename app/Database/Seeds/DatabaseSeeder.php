@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
         /* Orden de Ejecucion de las Semillas */
         $this->call(AreasSeeder::class);
         $this->call(UsuariosSeeder::class);
+        $this->call(EmpresasSeeder::class);
 
     }
 }
