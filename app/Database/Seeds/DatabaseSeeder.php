@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PedidosSeeder::class);
         $this->call(ArchivosSeeder::class);
         $this->call(HistorialPedidosSeeder::class);
+        $this->call(HistorialAsignacionesSeeder::class);
 
     }
 }
