@@ -32,6 +32,11 @@ class CrearTablaUsuarios extends Migration
                 'constraint' => 100,
                 'null' => false
             ],
+            'telefono' => [
+                'type' => 'VARCHAR',
+                'constraint' => 20,
+                'null' => false
+            ],
             'tipodoc' => [
                 'type' => 'tipodoc_enum',
                 'null' => true,
