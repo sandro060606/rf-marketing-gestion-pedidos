@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ResponsablesEmpresasSeeder::class);
         $this->call(ServiciosSeeder::class);
         $this->call(FormularioPedidosSeeder::class);
-
+        $this->call(PedidosSeeder::class);
+        
     }
 }

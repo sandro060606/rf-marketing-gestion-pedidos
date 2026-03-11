@@ -118,6 +118,7 @@ class CrearTablaPedidos extends Migration
     public function down()
     {
         $this->forge->dropTable('pedidos');
+        // Elimina el tipo ENUM solo si existe, para evitar errores
         $this->db->query("DROP TYPE IF EXISTS estado_pedido_enum");
     }
 }
