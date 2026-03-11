@@ -10,24 +10,23 @@ class PedidosSeeder extends Seeder
     {
         $data = [
             [
-                'idformpedido'         => 1,
-                'idadmin'              => 1,
-                'idempleado'           => 6, // MILENA = empleado responsable
-                'idservicio'           => 1, // Diseño
-                'titulo'               => null,
-                'prioridad'            => null,
-                'estado'               => 'por_aprobar', // Entregado
-                'num_modificaciones'   => 1,
+                'idformpedido' => 1,
+                'idadmin' => 1,    // admin que recibió el formulario
+                'idempleado' => null, // aún sin asignar
+                'idservicio' => 1,
+                'titulo' => null, // admin aún no lo define
+                'prioridad' => null, // admin aún no la define
+                'estado' => 'por_aprobar',
+                'num_modificaciones' => 0,    // recién llegó, sin modificaciones
                 'observacion_revision' => null,
-                // Fechas — null hasta que se registran
-                'fechainicio'          => null, // se llenó cuando empezó
-                'horainicio'           => null,   // se llenó cuando empezó
-                'fechafin'             => null, // se llenó cuando terminó
-                'horafin'              => null,   // se llenó cuando terminó
-                'fechacreacion'        => '2025-01-28 00:00:00',
-                'fechacompletado'      => null,
-                'cancelacionmotivo'    => null,
-                'fechacancelacion'     => null,
+                'fechainicio' => null, // nadie ha empezado
+                'horainicio' => null,
+                'fechafin' => null,
+                'horafin' => null,
+                'fechacreacion' => '2025-01-28 08:30:00', // cuando llegó el formulario
+                'fechacompletado' => null,
+                'cancelacionmotivo' => null,
+                'fechacancelacion' => null,
             ]
         ];
         $this->db->table('pedidos')->insertBatch($data);

@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ServiciosSeeder::class);
         $this->call(FormularioPedidosSeeder::class);
         $this->call(PedidosSeeder::class);
-        
+        $this->call(ArchivosSeeder::class);
+        $this->call(HistorialPedidosSeeder::class);
+
     }
 }
