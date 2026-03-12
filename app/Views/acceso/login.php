@@ -3,125 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RF Marketing — Iniciar Sesión</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>RF Marketing — Sistema de Gestión</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= base_url('recursos/styles/paginas/login.css') ?>">
 </head>
 <body>
 
-<!-- Fondo animado con orbes y partículas -->
-<div class="bg">
-    <div class="orb orb1"></div>
-    <div class="orb orb2"></div>
-    <div class="orb orb3"></div>
-    <div class="particles" id="particles"></div>
+<div class="bg-abstract">
+    <div class="orb-glow"></div>
 </div>
 
-<div class="login-card">
-
-    <!-- Panel izquierdo - marca y descripción del sistema -->
-    <div class="side-left">
-        <div class="deco-circle dc1"></div>
-        <div class="deco-circle dc2"></div>
-        <div class="deco-circle dc3"></div>
-
-        <div class="left-top">
-            <div class="left-badge">
-                <div class="badge-pulse"></div>
-                <span class="badge-label">Sistema en línea</span>
-            </div>
-            <div class="left-logo">RF</div>
-            <div class="left-agency">Agencia de Marketing S.A.C.</div>
-        </div>
-
-        <div class="left-middle">
-            <div class="left-system">
-                <div class="ls-title">Sistema de<br>Gestión de<br>Pedidos</div>
-                <div class="ls-sep"></div>
-                <div class="ls-desc">Centraliza, automatiza y escala<br>las operaciones de tu agencia.</div>
-            </div>
-        </div>
-
-        <div class="left-bottom">
-            <div class="left-bottom-text">RF MARKETING © <?= date('Y') ?> — ICA, PERÚ</div>
-        </div>
-    </div>
-
-    <!-- Panel derecho - formulario de acceso -->
-    <div class="side-right">
-        <div class="form-container">
-
-            <div class="form-eyebrow">
-                <div class="eyebrow-line"></div>
-                <span class="eyebrow-text">Acceso al sistema</span>
-            </div>
-
-            <div class="form-title">INICIA<br><span>SESIÓN</span></div>
-            <div class="form-subtitle">Ingresa tus credenciales para<br>acceder a tu panel de trabajo.</div>
-
-            <!-- Mensaje de error si las credenciales son incorrectas -->
-            <?php if (session()->getFlashdata('error')): ?>
-                <div class="alert-err show">
-                    ⚠ &nbsp; <?= session()->getFlashdata('error') ?>
-                </div>
-            <?php endif; ?>
-
-            <form action="<?= base_url('login') ?>" method="POST">
-                <?= csrf_field() ?>
-
-                <div class="fgroup">
-                    <label class="flabel">Usuario</label>
-                    <div class="input-box">
-                        <input type="text" id="usr" name="usuario"
-                            class="finput" placeholder="Tu nombre de usuario"
-                            autocomplete="off" required>
-                        <span class="input-ico">👤</span>
+<main class="login-wrapper">
+    <div class="login-card">
+        <div class="row g-0 h-100">
+            <div class="col-md-5 d-none d-md-flex side-branding">
+                <div class="branding-content">
+                    <div class="mini-badge">SISTEMA OFICIAL</div>
+                    <h1 class="display-1 logo-text">RF</h1>
+                    <div class="branding-footer">
+                        <p class="mb-0 fw-bold">Gestión de Pedidos</p>
+                        <small class="opacity-50">Solución Corporativa v1.0</small>
                     </div>
                 </div>
-
-                <div class="fgroup">
-                    <label class="flabel">Contraseña</label>
-                    <div class="input-box">
-                        <input type="password" id="pwd" name="clave"
-                            class="finput" placeholder="••••••••" required>
-                        <span class="input-ico">🔒</span>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn" id="btnMain">
-                    Ingresar al sistema
-                    <span class="btn-ico">→</span>
-                </button>
-
-            </form>
-
-            <div class="ftr">
-                <span class="ftr-left">RF Marketing</span>
-                <div class="ftr-right">
-                    <div class="ftr-dot"></div>
-                    <span class="ftr-ver">v1.0.0</span>
-                </div>
             </div>
 
+            <div class="col-md-7 side-form">
+                <div class="form-wrapper">
+                    <header class="mb-5">
+                        <h2 class="fw-800 mb-1">BIENVENIDO</h2>
+                       <p class="text-white-50 small">Por favor, introduce tus credenciales.</p>
+                    </header>
+
+                    <?php if (session()->getFlashdata('error')): ?>
+                        <div class="alert alert-danger-custom mb-4">
+                            <?= session()->getFlashdata('error') ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <form action="<?= base_url('login') ?>" method="POST">
+                        <?= csrf_field() ?>
+                        
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="usr" name="usuario" placeholder="Usuario" required>
+                            <label for="usr">USUARIO</label>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" id="pwd" name="clave" placeholder="Contraseña" required>
+                            <label for="pwd">CONTRASEÑA</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-rf-primary w-100 py-3 fw-bold">
+                            ACCEDER AL PANEL
+                        </button>
+                    </form>
+
+                    <footer class="mt-5 pt-4 border-top border-dark">
+                        <div class="d-flex justify-content-between align-items-center opacity-50 small">
+                            <span>RF MARKETING SAC</span>
+                            <span>2026</span>
+                        </div>
+                    </footer>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
-<!-- Genera partículas flotantes en el fondo -->
-<script>
-(function(){
-    const wrap = document.getElementById('particles');
-    for(let i=0;i<25;i++){
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.style.left = Math.random()*100+'vw';
-        p.style.width = p.style.height = (Math.random()*2+1)+'px';
-        p.style.animationDuration = (Math.random()*15+10)+'s';
-        p.style.animationDelay = (Math.random()*15)+'s';
-        wrap.appendChild(p);
-    }
-})();
-</script>
+</main>
 
 </body>
 </html>

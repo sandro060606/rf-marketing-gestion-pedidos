@@ -1,514 +1,123 @@
-/* ── RESET GENERAL ── */
-* { margin:0; padding:0; box-sizing:border-box; }
-
-/* ── BODY ── */
+/* ── BASE ── */
 body {
+    background-color: #050505;
     font-family: 'Outfit', sans-serif;
-    min-height: 100vh;
-    background: #050505;
+    height: 100vh;
+    margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    position: relative;
+    color: #fff;
 }
-
-/* ══════════════════════════════
-   FONDO ANIMADO
-══════════════════════════════ */
-
-/* Contenedor del fondo fijo detrás de todo */
-.bg {
+/* ── FONDO SUTIL ── */
+.bg-abstract {
     position: fixed;
     inset: 0;
-    z-index: 0;
+    z-index: -1;
+    overflow: hidden;
 }
-
-/* Grid de líneas amarillas sutiles */
-.bg::before {
-    content: '';
+.orb-glow {
     position: absolute;
-    inset: 0;
-    background-image:
-        linear-gradient(rgba(245,196,0,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(245,196,0,0.04) 1px, transparent 1px);
-    background-size: 50px 50px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(245, 196, 0, 0.08), transparent 70%);
+    top: -200px;
+    right: -100px;
 }
 
-/* Orbes de luz difuminada */
-.orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(100px);
-    animation: orbMove 8s ease-in-out infinite;
-}
-
-/* Orbe superior izquierdo */
-.orb1 {
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(245,196,0,0.18), transparent 70%);
-    top: -200px; left: -200px;
-    animation-delay: 0s;
-}
-
-/* Orbe inferior derecho */
-.orb2 {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(245,196,0,0.12), transparent 70%);
-    bottom: -150px; right: -150px;
-    animation-delay: 4s;
-}
-
-/* Orbe central */
-.orb3 {
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(255,200,0,0.08), transparent 70%);
-    top: 50%; left: 50%;
-    transform: translate(-50%,-50%);
-    animation-delay: 2s;
-}
-
-/* Movimiento suave de los orbes */
-@keyframes orbMove {
-    0%,100% { transform: scale(1) translate(0,0); }
-    33%     { transform: scale(1.1) translate(20px,-20px); }
-    66%     { transform: scale(0.95) translate(-15px,15px); }
-}
-
-/* Contenedor de partículas flotantes */
-.particles { position: absolute; inset: 0; overflow: hidden; }
-
-/* Cada partícula individual generada por JS */
-.particle {
-    position: absolute;
-    width: 2px; height: 2px;
-    background: #F5C400;
-    border-radius: 50%;
-    animation: particleFloat linear infinite;
-    opacity: 0;
-}
-
-/* Animación de subida de partículas */
-@keyframes particleFloat {
-    0%   { transform: translateY(100vh); opacity: 0; }
-    10%  { opacity: 0.6; }
-    90%  { opacity: 0.3; }
-    100% { transform: translateY(-100px) translateX(30px); opacity: 0; }
-}
-
-/* ══════════════════════════════
-   CARD PRINCIPAL
-══════════════════════════════ */
-
-/* Contenedor central del login */
+/* ── CONTENEDOR (TAMAÑO ORIGINAL) ── */
 .login-card {
-    position: relative;
-    z-index: 10;
-    width: 900px;
-    min-height: 540px;
-    border-radius: 24px;
+    width: 900px; 
+    height: 540px; 
+    background: #0c0c0c;
+    border-radius: 20px;
     overflow: hidden;
-    display: flex;
-    box-shadow:
-        0 0 0 1px rgba(245,196,0,0.15),
-        0 40px 80px rgba(0,0,0,0.8),
-        0 0 120px rgba(245,196,0,0.06);
-    animation: cardIn 0.8s cubic-bezier(.16,1,.3,1) both;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.05);
 }
 
-/* Animación de entrada de la card */
-@keyframes cardIn {
-    from { opacity:0; transform: translateY(40px) scale(0.96); }
-    to   { opacity:1; transform: translateY(0) scale(1); }
-}
-
-/* ══════════════════════════════
-   PANEL IZQUIERDO — MARCA
-══════════════════════════════ */
-
-.side-left {
-    width: 44%;
-    background: linear-gradient(145deg, #F5C400 0%, #FFB800 50%, #E6A800 100%);
-    position: relative;
-    overflow: hidden;
+/* ── PANEL IZQUIERDO── */
+.side-branding {
+    background: #F5C400;
+    color: #000;
+    padding: 60px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 44px 40px;
+    position: relative;
 }
 
-/* Patrón de líneas diagonales sobre el fondo amarillo */
-.side-left::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-        -55deg, transparent, transparent 18px,
-        rgba(0,0,0,0.04) 18px, rgba(0,0,0,0.04) 19px
-    );
-}
-
-/* Círculos decorativos del panel izquierdo */
-.deco-circle {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid rgba(0,0,0,0.08);
-}
-
-.dc1 { width:420px; height:420px; top:-140px; left:-140px; }
-.dc2 { width:280px; height:280px; bottom:-80px; right:-80px; }
-.dc3 { width:160px; height:160px; top:35%; right:-50px; animation: spin 20s linear infinite; }
-
-/* Rotación continua del círculo pequeño */
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.left-top { position: relative; z-index: 2; }
-
-/* Badge "Sistema en línea" */
-.left-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    background: rgba(0,0,0,0.12);
-    border-radius: 30px;
-    padding: 6px 14px;
-    margin-bottom: 28px;
-}
-
-/* Punto parpadeante del badge */
-.badge-pulse {
-    width: 7px; height: 7px;
-    background: #000;
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%,100% { opacity:1; transform:scale(1); }
-    50%     { opacity:0.4; transform:scale(0.8); }
-}
-
-.badge-label {
-    font-size: 9px;
+.mini-badge {
+    font-size: 10px;
     font-weight: 800;
     letter-spacing: 3px;
-    text-transform: uppercase;
-    color: rgba(0,0,0,0.6);
+    border: 1px solid rgba(0,0,0,0.2);
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 50px;
+    margin-bottom: 20px;
 }
 
-/* Logo RF grande */
-.left-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 96px;
-    color: #000;
-    line-height: 0.85;
-    letter-spacing: 4px;
-    text-shadow: 4px 6px 0 rgba(0,0,0,0.1);
+.logo-text {
+    font-weight: 800;
+    letter-spacing: -4px;
+    margin-left: -5px;
 }
 
-.left-agency {
-    font-size: 11px;
-    font-weight: 700;
-    color: rgba(0,0,0,0.45);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-top: 8px;
-}
-
-.left-middle {
-    position: relative;
-    z-index: 2;
-    flex: 1;
+/* ── PANEL DERECHO (FORMULARIO) ── */
+.side-form {
+    padding: 60px;
     display: flex;
     align-items: center;
-    padding: 20px 0;
 }
 
-/* Caja con nombre y descripción del sistema */
-.left-system {
-    background: rgba(0,0,0,0.1);
-    border-radius: 14px;
-    padding: 18px 20px;
-    width: 100%;
+.form-wrapper { width: 100%; }
+
+.fw-800 { font-weight: 800; letter-spacing: 1px; }
+
+/* ── INPUTS ESTILO MINIMAL ── */
+.form-control {
+    background-color: #151515 !important;
+    border: 1px solid #222 !important;
+    color: #fff !important;
+    border-radius: 12px;
+    font-size: 0.9rem;
 }
 
-.ls-title {
-    font-size: 15px;
-    font-weight: 800;
-    color: #000;
-    line-height: 1.35;
+.form-control:focus {
+    border-color: #F5C400 !important;
+    box-shadow: 0 0 0 4px rgba(245, 196, 0, 0.1) !important;
 }
 
-/* Separador entre título y descripción */
-.ls-sep {
-    width: 30px; height: 2px;
-    background: rgba(0,0,0,0.25);
-    margin: 10px 0;
-    border-radius: 2px;
-}
-
-.ls-desc {
-    font-size: 11px;
-    color: rgba(0,0,0,0.5);
-    font-weight: 500;
-    line-height: 1.6;
-}
-
-.left-bottom { position: relative; z-index: 2; }
-
-.left-bottom-text {
-    font-size: 10px;
-    color: rgba(0,0,0,0.35);
-    font-weight: 600;
+.form-floating label {
+    color: rgba(255,255,255,0.3);
+    font-size: 0.75rem;
     letter-spacing: 1px;
+    font-weight: 600;
 }
 
-/* ══════════════════════════════
-   PANEL DERECHO — FORMULARIO
-══════════════════════════════ */
-
-.side-right {
-    width: 56%;
-    background: #0c0c0c;
-    display: flex;
-    align-items: center;
-    padding: 50px 52px;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Línea amarilla superior */
-.side-right::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #F5C400 0%, #FFD740 40%, transparent 100%);
-}
-
-/* Brillo de fondo esquina superior derecha */
-.side-right::after {
-    content: '';
-    position: absolute;
-    top: -100px; right: -100px;
-    width: 350px; height: 350px;
-    background: radial-gradient(circle, rgba(245,196,0,0.05) 0%, transparent 65%);
-    pointer-events: none;
-}
-
-/* Contenedor del formulario con animación de entrada */
-.form-container {
-    width: 100%;
-    position: relative;
-    z-index: 2;
-    animation: formIn 0.9s cubic-bezier(.16,1,.3,1) 0.2s both;
-}
-
-@keyframes formIn {
-    from { opacity:0; transform: translateX(20px); }
-    to   { opacity:1; transform: translateX(0); }
-}
-
-/* Línea + texto pequeño encima del título */
-.form-eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
-}
-
-.eyebrow-line {
-    width: 24px; height: 2px;
-    background: #F5C400;
-    border-radius: 2px;
-}
-
-.eyebrow-text {
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: #F5C400;
-}
-
-/* Título principal del formulario */
-.form-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 52px;
-    color: #fff;
-    letter-spacing: 3px;
-    line-height: 0.9;
-    margin-bottom: 8px;
-}
-
-/* Palabra en amarillo dentro del título */
-.form-title span { color: #F5C400; }
-
-.form-subtitle {
-    font-size: 12px;
-    color: #3a3a3a;
-    font-weight: 400;
-    margin-bottom: 36px;
-    line-height: 1.6;
-}
-
-/* ── ALERTA DE ERROR ── */
-.alert-err {
-    display: none;
-    align-items: center;
-    gap: 10px;
-    background: #120606;
-    border: 1px solid #2a0a0a;
-    border-left: 3px solid #ef4444;
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 12px;
-    color: #f87171;
-    margin-bottom: 22px;
-    font-weight: 500;
-}
-
-/* Muestra la alerta cuando tiene la clase show */
-.alert-err.show { display: flex; }
-
-/* ── CAMPOS DEL FORMULARIO ── */
-.fgroup { margin-bottom: 18px; }
-
-.flabel {
-    display: block;
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #2e2e2e;
-    margin-bottom: 9px;
-}
-
-/* Contenedor relativo para posicionar el icono dentro del input */
-.input-box { position: relative; }
-
-/* Icono dentro del input */
-.input-ico {
-    position: absolute;
-    left: 15px; top: 50%;
-    transform: translateY(-50%);
-    font-size: 15px;
-    opacity: 0.2;
-    transition: opacity 0.2s;
-}
-
-.finput {
-    width: 100%;
-    background: #111;
-    border: 1px solid #1c1c1c;
-    border-radius: 12px;
-    padding: 14px 16px 14px 46px;
-    font-size: 14px;
-    color: #fff;
-    font-family: 'Outfit', sans-serif;
-    font-weight: 400;
-    outline: none;
-    transition: all 0.25s;
-}
-
-.finput::placeholder { color: #222; }
-
-/* Estado activo del input */
-.finput:focus {
-    border-color: #F5C400;
-    background: #0d0c00;
-    box-shadow: 0 0 0 4px rgba(245,196,0,0.07);
-}
-
-/* Estado de error del input */
-.finput.err {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 4px rgba(239,68,68,0.07);
-}
-
-/* ── BOTÓN INGRESAR ── */
-.btn {
-    width: 100%;
-    background: #F5C400;
-    color: #000;
+/* ── BOTÓN ── */
+.btn-rf-primary {
+    background-color: #F5C400;
     border: none;
+    color: #000;
     border-radius: 12px;
-    padding: 16px 20px;
-    font-size: 13px;
-    font-weight: 800;
-    font-family: 'Outfit', sans-serif;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    cursor: pointer;
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.25s;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
 }
 
-/* Efecto de brillo que barre el botón al hacer hover */
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-    transition: left 0.5s;
-}
-
-.btn:hover {
-    background: #FFD740;
+.btn-rf-primary:hover {
+    background-color: #ffcc00;
     transform: translateY(-2px);
-    box-shadow: 0 12px 35px rgba(245,196,0,0.4);
+    box-shadow: 0 10px 20px rgba(245, 196, 0, 0.2);
 }
 
-.btn:hover::before { left: 150%; }
-.btn:active { transform: translateY(0); box-shadow: none; }
-
-/* Flecha que se mueve al hacer hover */
-.btn-ico { font-size: 18px; transition: transform 0.2s; }
-.btn:hover .btn-ico { transform: translateX(5px); }
-
-/* ── PIE DEL FORMULARIO ── */
-.ftr {
-    margin-top: 28px;
-    padding-top: 20px;
-    border-top: 1px solid #131313;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.ftr-left {
-    font-size: 10px;
-    color: #1e1e1e;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-}
-
-.ftr-right {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-/* Punto amarillo parpadeante */
-.ftr-dot {
-    width: 5px; height: 5px;
-    background: #F5C400;
-    border-radius: 50%;
-    opacity: 0.4;
-    animation: pulse 3s ease-in-out infinite;
-}
-
-.ftr-ver {
-    font-size: 9px;
-    color: #1e1e1e;
-    font-weight: 800;
-    letter-spacing: 2px;
+/* ── ALERTAS ── */
+.alert-danger-custom {
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    color: #ff8888;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 0.85rem;
 }
