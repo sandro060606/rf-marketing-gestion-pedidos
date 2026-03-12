@@ -10,14 +10,14 @@ class EmpresasSeeder extends Seeder
     {
         $data = [
             [
-                'idusuario'     => 7,
+                'idusuario'     => 8,
                 'nombreempresa' => 'Universidad Autonoma de Ica',
                 'ruc'           => '20452777399',
                 'correo'        => 'uai@uai.edu.pe',
                 'telefono'      => '056123456',
             ],
             [
-                'idusuario'     => 8,
+                'idusuario'     => 9,
                 'nombreempresa' => 'Colegio Byron',
                 'ruc'           => '20452564727',
                 'correo'        => 'ada@byron.edu.pe',

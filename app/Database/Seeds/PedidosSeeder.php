@@ -13,12 +13,12 @@ class PedidosSeeder extends Seeder
                 // Pedido 1 — ya completado (el del ejemplo real)
                 'idformpedido' => 1,
                 'idadmin' => 1,
-                'idempleado' => 6,      // Milena asignada
+                'idempleado' => 6,
                 'idservicio' => 1,
                 'titulo' => 'Recepción Documentaria Admisión 2025-1',
                 'prioridad' => 'alta',
                 'estado' => 'completado',
-                'num_modificaciones' => 1,
+                'num_modificaciones' => 0,
                 'observacion_revision' => null,
                 'fechainicio' => '2025-01-31',
                 'horainicio' => '16:00:00',
@@ -30,7 +30,7 @@ class PedidosSeeder extends Seeder
                 'fechacancelacion' => null,
             ],
             [
-                'idformpedido' => 1,
+                'idformpedido' => 2,
                 'idadmin' => 1,    // admin que recibió el formulario
                 'idempleado' => null, // aún sin asignar
                 'idservicio' => 1,
@@ -43,7 +43,7 @@ class PedidosSeeder extends Seeder
                 'horainicio' => null,
                 'fechafin' => null,
                 'horafin' => null,
-                'fechacreacion' => '2025-01-28 08:30:00', // cuando llegó el formulario
+                'fechacreacion' => '2026-03-12 08:30:00', // cuando llegó el formulario
                 'fechacompletado' => null,
                 'cancelacionmotivo' => null,
                 'fechacancelacion' => null,

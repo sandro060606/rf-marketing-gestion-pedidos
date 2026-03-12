@@ -40,26 +40,6 @@ class HistorialPedidosSeeder extends Seeder
                 'observacion' => 'Entregable subido para revision',
             ],
             [
-                // Admin rechazó — regresa a Milena
-                'idpedido' => 1,
-                'idusuario' => 1,
-                'rol_snapshot' => 'administrador',
-                'estadoanterior' => 'en_revision',
-                'estadonuevo' => 'en_proceso',
-                'fechamodificacion' => '2025-01-31 17:10:00',
-                'observacion' => 'Falta ajustar medidas del banner',
-            ],
-            [
-                // Milena subió corrección
-                'idpedido' => 1,
-                'idusuario' => 6,
-                'rol_snapshot' => 'empleado',
-                'estadoanterior' => 'en_proceso',
-                'estadonuevo' => 'en_revision',
-                'fechamodificacion' => '2025-01-31 17:15:00',
-                'observacion' => 'Corrección realizada y subida',
-            ],
-            [
                 // Admin aprobó — completado
                 'idpedido' => 1,
                 'idusuario' => 1,
@@ -70,5 +50,6 @@ class HistorialPedidosSeeder extends Seeder
                 'observacion' => 'Entregable aprobado y enviado al cliente',
             ],
         ];
+        $this->db->table('historial_pedidos')->insertBatch($data);
     }
 }
