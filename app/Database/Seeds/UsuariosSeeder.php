@@ -10,14 +10,14 @@ class UsuariosSeeder extends Seeder
     {
         $data = [
             [
-                'nombre'        => 'FABIANA',
-                'apellidos'     => 'TASAYCO HUACCAMAYTA',
-                'correo'        => 'tasaycofab26@gmail.com',
-                'telefono'      => '902204349',
+                'nombre'        => 'NOEMI',
+                'apellidos'     => 'TORRES TINEDO',
+                'correo'        => '16noemitorres@gmail.com',
+                'telefono'      => '963604801',
                 'tipodoc'       => 'DNI',
-                'numerodoc'     => '74890091',
-                'usuario'       => 'ftasayco_rf',
-                'clave'         => 'rf_74890091',
+                'numerodoc'     => '76331600',
+                'usuario'       => 'ntorres_rf',
+                'clave'         => 'rf_76331600',
                 'rol'           => 'administrador',
                 'idarea'        => null,
                 'esresponsable' => false,
