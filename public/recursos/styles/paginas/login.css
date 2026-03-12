@@ -1,0 +1,123 @@
+/* ── BASE ── */
+body {
+    background-color: #050505;
+    font-family: 'Outfit', sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+/* ── FONDO SUTIL ── */
+.bg-abstract {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+}
+.orb-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(245, 196, 0, 0.08), transparent 70%);
+    top: -200px;
+    right: -100px;
+}
+
+/* ── CONTENEDOR (TAMAÑO ORIGINAL) ── */
+.login-card {
+    width: 900px; 
+    height: 540px; 
+    background: #0c0c0c;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ── PANEL IZQUIERDO── */
+.side-branding {
+    background: #F5C400;
+    color: #000;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.mini-badge {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    border: 1px solid rgba(0,0,0,0.2);
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+}
+
+.logo-text {
+    font-weight: 800;
+    letter-spacing: -4px;
+    margin-left: -5px;
+}
+
+/* ── PANEL DERECHO (FORMULARIO) ── */
+.side-form {
+    padding: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.form-wrapper { width: 100%; }
+
+.fw-800 { font-weight: 800; letter-spacing: 1px; }
+
+/* ── INPUTS ESTILO MINIMAL ── */
+.form-control {
+    background-color: #151515 !important;
+    border: 1px solid #222 !important;
+    color: #fff !important;
+    border-radius: 12px;
+    font-size: 0.9rem;
+}
+
+.form-control:focus {
+    border-color: #F5C400 !important;
+    box-shadow: 0 0 0 4px rgba(245, 196, 0, 0.1) !important;
+}
+
+.form-floating label {
+    color: rgba(255,255,255,0.3);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+/* ── BOTÓN ── */
+.btn-rf-primary {
+    background-color: #F5C400;
+    border: none;
+    color: #000;
+    border-radius: 12px;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.btn-rf-primary:hover {
+    background-color: #ffcc00;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(245, 196, 0, 0.2);
+}
+
+/* ── ALERTAS ── */
+.alert-danger-custom {
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    color: #ff8888;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+}
