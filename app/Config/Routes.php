@@ -48,4 +48,7 @@ $routes->group('cliente'/* , ['filter' => 'sesion'] */, function($routes) {
 
     // Archivos de un pedido (entradas + entregables)
     $routes->get('mis-pedidos/(:num)/archivos', 'Cliente\MisPedidosController::archivos/$1');
+
+    //Subir archivo adjunto a un pedido
+    $routes->post('mis-pedidos/(:num)/archivos', 'Cliente\FormularioController::subirArchivo/$1');
 });
