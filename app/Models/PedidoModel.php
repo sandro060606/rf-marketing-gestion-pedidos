@@ -10,13 +10,33 @@ class PedidoModel extends Model
     protected $primaryKey = 'id';
     protected $returnType = 'array';
 
-    // ─────────────────────────────────────────────────────────
+    protected $allowedFields = [
+        'idformpedido', 'idadmin', 'idempleado', 'idservicio',
+        'titulo', 'prioridad', 'estado',
+        'observacion_revision', 'num_modificaciones',
+        'fechainicio', 'horainicio', 'fechafin', 'horafin',
+        'fechacompletado', 'cancelacionmotivo', 'fechacancelacion',
+    ];
+
+    // POST: Crear pedido automáticamente desde un formulario
+
+    public function crearDesdFormulario(int $idFormulario, int $idServicio): int
+    {
+        $datos = [
+            'idformpedido' => $idFormulario,
+            'idadmin'      => 1,         // Admin por defecto (id=1 = ntorres_rf)
+            'idempleado'   => null,       // Sin asignar aún
+            'idservicio'   => $idServicio,
+            'titulo'       => null,       // El admin lo define al procesar
+            'prioridad'    => null,       // El admin lo define al procesar
+            'estado'       => 'por_aprobar',
+        ];
+ 
+        $this->insert($datos);
+        return $this->getInsertID();
+    }
+
     // GET: Lista de pedidos de un cliente
-    //
-    // El cliente ve sus pedidos a través de su empresa.
-    // Se filtra por el idusuario del cliente (representante
-    // de la empresa) y se trae estado, servicio y fechas.
-    // ─────────────────────────────────────────────────────────
     public function listarPorCliente(int $idUsuario): array
     {
         return $this->db->table('pedidos p')
@@ -41,13 +61,7 @@ class PedidoModel extends Model
             ->getResultArray();
     }
 
-    // ─────────────────────────────────────────────────────────
     // GET: Detalle completo de un pedido
-    //
-    // Trae toda la info del pedido + datos del formulario
-    // original que envió el cliente (descripción, formatos,
-    // canales, etc.) + nombre del empleado asignado.
-    // ─────────────────────────────────────────────────────────
     public function detallePedido(int $idPedido): array|null
     {
         return $this->db->table('pedidos p')
