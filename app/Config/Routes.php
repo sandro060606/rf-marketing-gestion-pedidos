@@ -45,4 +45,7 @@ $routes->group('cliente'/* , ['filter' => 'sesion'] */, function($routes) {
     // POST → crea el pedido (siguiente paso)
     $routes->get('nuevo-pedido',  'Cliente\FormularioController::index');
     $routes->post('nuevo-pedido', 'Cliente\FormularioController::guardar');
+
+    // Archivos de un pedido (entradas + entregables)
+    $routes->get('mis-pedidos/(:num)/archivos', 'Cliente\MisPedidosController::archivos/$1');
 });
