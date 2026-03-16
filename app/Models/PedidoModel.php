@@ -9,6 +9,7 @@ class PedidoModel extends Model
     protected $table      = 'pedidos';
     protected $primaryKey = 'id';
     protected $returnType = 'array';
+    protected $allowedFields = ['idformpedido','idadmin','idempleado','idservicio','titulo','prioridad','estado','num_modificaciones','observacion_revision','fechainicio','fechafin','fechacompletado','cancelacionmotivo'];
 
     // ─────────────────────────────────────────────────────────
     // GET: Lista de pedidos de un cliente
@@ -85,4 +86,17 @@ class PedidoModel extends Model
             ->get()
             ->getRowArray();
     }
+
+    // Cuenta pedidos por estado
+public function contarPorEstado(string $estado): int
+{
+    return $this->where('estado', $estado)->countAllResults();
+}
+
+public function contarSinAsignar(): int
+{
+    return $this->where('idempleado', null)
+                ->where('estado', 'por_aprobar')
+                ->countAllResults();
+}
 }

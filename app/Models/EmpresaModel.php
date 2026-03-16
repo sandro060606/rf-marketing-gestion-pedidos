@@ -10,6 +10,8 @@ class EmpresaModel extends Model
     protected $primaryKey = 'id';
     protected $returnType = 'array';
 
+    protected $allowedFields = ['idusuario','nombreempresa','ruc','correo','telefono'];
+
     // GET: Buscar empresa por id del usuario (representante)
     public function buscarPorUsuario(int $idUsuario): array|null
     {
@@ -35,5 +37,12 @@ class EmpresaModel extends Model
             ->join('usuarios u', 'u.id = e.idusuario')
             ->get()
             ->getResultArray();
+
+    }
+    // Trae todas las empresas con el nombre correcto de columna
+    public function obtenerTodas(): array
+    {
+        return $this->select('id, nombreempresa, ruc, correo, telefono')
+                    ->findAll();
     }
 }
