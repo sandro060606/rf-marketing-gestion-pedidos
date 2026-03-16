@@ -6,12 +6,39 @@ use CodeIgniter\Controller;
 use App\Models\ServicioModel;
 use App\Models\FormularioModel;
 use App\Models\EmpresaModel;
+use App\Models\PedidoModel;
+use App\Models\NotificacionesModel;
 
 class FormularioController extends Controller
 {
-    // Devuelve los servicios disponibles para que el cliente
-    // También devuelve los datos de su empresa.
+    // GET /cliente/nuevo-pedido
+    // Devuelve servicios disponibles + datos de la empresa
     public function index()
+    {
+        $idUsuario = 8/* session()->get('id') */;
+
+        $empresaModel = new EmpresaModel();
+        $empresa      = $empresaModel->buscarPorUsuario($idUsuario);
+
+        if (!$empresa) {
+            return $this->responder(404, 'No tienes una empresa registrada.');
+        }
+
+        $servicioModel = new ServicioModel();
+        $servicios     = $servicioModel->listarActivos();
+
+        return $this->responder(200, 'Datos para nuevo pedido.', [
+            'empresa'   => $empresa,
+            'servicios' => $servicios,
+        ]);
+    }
+
+    // Flujo completo:
+    // 1. Valida campos obligatorios
+    // 2. Crea el formulario en formulario_pedidos
+    // 3. Crea el pedido en estado 'por_aprobar'
+    // 4. Notifica al administrador del nuevo pedido
+    public function guardar()
     {
         $idUsuario = 8/* session()->get('id') */;
 
@@ -23,56 +50,32 @@ class FormularioController extends Controller
             return $this->responder(404, 'No tienes una empresa registrada.');
         }
 
-        // Obtener servicios disponibles
-        $servicioModel = new ServicioModel();
-        $servicios     = $servicioModel->listarActivos();
-
-        return $this->responder(200, 'Datos para nuevo pedido.', [
-            'empresa'   => $empresa,
-            'servicios' => $servicios,
-        ]);
-    }
-
-    // Recibe los datos del formulario, los valida y crea el registro en formulario_pedidos.
-    // Crea automáticamente el pedido en estado 'por_aprobar' para que el administrador lo vea en el panel.
-    public function guardar()
-    {
-        $idUsuario = 8/* session()->get('id') */;
- 
-        //Obtener empresa del cliente
-        $empresaModel = new EmpresaModel();
-        $empresa      = $empresaModel->buscarPorUsuario($idUsuario);
- 
-        if (!$empresa) {
-            return $this->responder(404, 'No tienes una empresa registrada.');
-        }
- 
-        //Obtener datos del POST
+        // Obtener datos del POST
         $post = $this->request->getPost();
- 
-        //Validación de campos obligatorios
+
+        // Validación de campos obligatorios
         $camposObligatorios = [
             'idservicio', 'titulo', 'area',
             'objetivo_comunicacion', 'descripcion',
             'tipo_requerimiento', 'fecharequerida', 'prioridad'
         ];
- 
+
         foreach ($camposObligatorios as $campo) {
             if (empty($post[$campo])) {
                 return $this->responder(422, "El campo '{$campo}' es obligatorio.");
             }
         }
-        // Si vienen como string se guardan tal cual (ya es JSON)
-        // Si vienen como array se convierten a JSON
+
+        // Canales y formatos van guardados como JSON
         $canales  = is_array($post['canales_difusion'] ?? null)
             ? json_encode($post['canales_difusion'])
             : ($post['canales_difusion'] ?? '[]');
- 
+
         $formatos = is_array($post['formatos_solicitados'] ?? null)
             ? json_encode($post['formatos_solicitados'])
             : ($post['formatos_solicitados'] ?? '[]');
- 
-        // Preparar datos para insertar
+
+        // Crear el formulario 
         $datos = [
             'idempresa'             => $empresa['id'],
             'idservicio'            => (int) $post['idservicio'],
@@ -89,24 +92,34 @@ class FormularioController extends Controller
             'fecharequerida'        => $post['fecharequerida'],
             'prioridad'             => $post['prioridad'],
         ];
- 
-        // Crear el formulario
+
         $formularioModel = new FormularioModel();
         $idFormulario    = $formularioModel->crear($datos);
- 
+
         if (!$idFormulario) {
             return $this->responder(500, 'Error al crear el pedido. Intenta de nuevo.');
         }
- 
-        //Crear el pedido automáticamente en 'por_aprobar' (Admin)
-        $pedidoModel = new \App\Models\PedidoModel();
-        $pedidoModel->crearDesdFormulario($idFormulario, (int) $post['idservicio']);
- 
+
+        // Crear pedido en estado 'por_aprobar'
+        $pedidoModel = new PedidoModel();
+        $idPedido    = $pedidoModel->crearDesdFormulario($idFormulario, (int) $post['idservicio']);
+
+        // Notificar al administrador (id=1) 
+        // El admin verá esta notificación en su panel
+        $notificacionesModel = new NotificacionesModel();
+        $notificacionesModel->crear(
+            $idPedido,
+            1, // id del administrador (ntorres_rf)
+            'Nuevo pedido recibido',
+            "La empresa {$empresa['nombreempresa']} ha enviado un nuevo pedido: \"{$post['titulo']}\" — pendiente de revisión.",
+            'estado'
+        );
+
         return $this->responder(201, 'Pedido creado correctamente.', [
             'idformulario' => $idFormulario,
+            'idpedido'     => $idPedido,
         ]);
     }
-
     // PRIVADO: Respuesta JSON estándar
     private function responder(int $status, string $mensaje, mixed $data = null)
     {
