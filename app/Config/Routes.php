@@ -39,6 +39,10 @@ $routes->group('cliente'/* , ['filter' => 'sesion'] */, function($routes) {
 
     // Ver sus pedidos
     $routes->get('mis-pedidos', 'Cliente\MisPedidosController::index');
-    
     $routes->get('mis-pedidos/(:num)', 'Cliente\MisPedidosController::detalle/$1');
+
+    // GET  → devuelve servicios disponibles + datos empresa
+    // POST → crea el pedido (siguiente paso)
+    $routes->get('nuevo-pedido',  'Cliente\FormularioController::index');
+    $routes->post('nuevo-pedido', 'Cliente\FormularioController::guardar');
 });
