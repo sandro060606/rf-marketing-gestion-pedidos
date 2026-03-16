@@ -15,8 +15,8 @@ class HistorialAsignacionesSeeder extends Seeder
                 'idempleado_anterior' => null,
                 'idempleado' => 6,
                 'idadmin' => 1,
-                'fecha_asignacion' => '2025-01-28 09:00:00',
-                'fecha_fin' => '2025-01-31 17:30:00', // terminó al completarse
+                'fecha_asignacion' => '2026-02-21 09:00:00',
+                'fecha_fin' => '2026-02-27 17:30:00', // terminó al completarse
                 'motivo_cambio' => null,
             ],
         ];

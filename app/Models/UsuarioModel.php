@@ -6,22 +6,33 @@ use CodeIgniter\Model;
 
 class UsuarioModel extends Model
 {
-    // Tabla que usa este modelo
-    protected $table      = 'usuarios';
+    // Configuración del modelo
+    protected $table = 'usuarios';      // Tabla principal
+    protected $primaryKey = 'id';       // Clave primaria
+    protected $returnType = 'array';    // Retorna arrays, no objetos
 
-    // Clave primaria de la tabla
-    protected $primaryKey = 'id';
-
-    // Los resultados se devuelven como arreglo
-    protected $returnType = 'array';
-
-    // Busca un usuario por su nombre de usuario
-    // Solo devuelve el usuario si está activo (estado = true)
-    // Devuelve un solo registro o null si no existe
-    public function buscarPorUsuario($usuario)
+    // LOGIN: Busca usuario activo por nombre de usuario
+    // Retorna: array con todos los datos | null si no existe
+    public function buscarPorUsuario(string $usuario): array|null
     {
-        return $this->where('usuario', $usuario)
-                    ->where('estado', true)
-                    ->first();
+        return $this->db->table('usuarios u')
+            ->select('
+                u.id,
+                u.nombre,
+                u.apellidos,
+                u.correo,
+                u.usuario,
+                u.clave,
+                u.rol,
+                u.idarea,
+                u.esresponsable,
+                u.estado,
+                a.nombre AS area
+            ')
+            ->join('areas a', 'a.id = u.idarea', 'left') // LEFT porque admin no tiene área
+            ->where('u.usuario', $usuario)               // Filtra por nombre de usuario
+            ->where('u.estado', true)                    // Solo usuarios activos (estado = true)
+            ->get()
+            ->getRowArray();                             // Una fila o null
     }
 }
