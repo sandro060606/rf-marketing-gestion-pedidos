@@ -12,7 +12,7 @@ class MisPedidosController extends Controller
     public function index()
     {
         // Obtener el id del usuario desde la sesión
-        $idUsuario = 8/* session()->get('id') */;
+        $idUsuario = session()->get('id');
 
         // Seguridad: si no hay sesión activa, rechazar
         if (!$idUsuario) {
@@ -33,7 +33,7 @@ class MisPedidosController extends Controller
     // Incluye datos del formulario original + empleado asignado.
     public function detalle(int $id)
     {
-        $idUsuario = 8 /* session()->get('id') */;
+        $idUsuario = session()->get('id');
 
         if (!$idUsuario) {
             return $this->responder(401, 'No autorizado.');
