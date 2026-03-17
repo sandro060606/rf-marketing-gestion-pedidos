@@ -1,7 +1,7 @@
 <?= $this->extend('plantillas/principal') ?>
 
-<?= $this->section('estilos') ?>
-<link href="<?= base_url('recursos/styles/paginas/panel.css') ?>" rel="stylesheet">
+<?= $this->section('styles') ?>
+<link href="<?= base_url('recursos/styles/paginas/panel.css')  ?>" rel="stylesheet">
 <?= $this->endSection() ?>
 
 <?= $this->section('contenido') ?>
@@ -10,30 +10,34 @@
 <p class="seccion-titulo">Resumen</p>
 
 <div class="row g-2 mb-3">
-    <div class="col-3">
-        <div class="card p-3">
-            <div class="metrica-etiqueta">Pedidos Activos</div>
-            <div class="metrica-numero" style="color:var(--amarillo)"><?= $activos ?? 0 ?></div>
-        </div>
+<div class="col-3">
+    <div class="card p-3">
+        <div class="met-label">Pedidos Activos</div>
+        <div class="met-num amarillo"><?= $activos ?? 0 ?></div>
+        <div class="met-sub">En curso</div>
     </div>
-    <div class="col-3">
-        <div class="card p-3">
-            <div class="metrica-etiqueta">Por Aprobar</div>
-            <div class="metrica-numero" style="color:var(--morado)"><?= $porAprobar ?? 0 ?></div>
-        </div>
+</div>
+<div class="col-3">
+    <div class="card p-3">
+        <div class="met-label">Por Aprobar</div>
+        <div class="met-num morado"><?= $porAprobar ?? 0 ?></div>
+        <div class="met-sub">Pendientes de revisión</div>
     </div>
-    <div class="col-3">
-        <div class="card p-3">
-            <div class="metrica-etiqueta">Completados</div>
-            <div class="metrica-numero" style="color:var(--verde)"><?= $completados ?? 0 ?></div>
-        </div>
+</div>
+<div class="col-3">
+    <div class="card p-3">
+        <div class="met-label">Completados</div>
+        <div class="met-num verde"><?= $completados ?? 0 ?></div>
+        <div class="met-sub">Total histórico</div>
     </div>
-    <div class="col-3">
-        <div class="card p-3">
-            <div class="metrica-etiqueta">Sin Asignar</div>
-            <div class="metrica-numero" style="color:var(--rojo)"><?= $sinAsignar ?? 0 ?></div>
-        </div>
+</div>
+<div class="col-3">
+    <div class="card p-3">
+        <div class="met-label">Sin Asignar</div>
+        <div class="met-num rojo"><?= $sinAsignar ?? 0 ?></div>
+        <div class="met-sub">Requieren atención</div>
     </div>
+</div>
 </div>
 <!-- Empresas -->
 <p class="seccion-titulo">Empresas</p>

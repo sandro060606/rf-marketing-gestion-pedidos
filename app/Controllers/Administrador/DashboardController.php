@@ -38,7 +38,7 @@ class DashboardController extends Controller
             'sinAsignar'    => $sinAsignar,
             'empresas'      => $empresaModel->obtenerConStats(),
             'areas'         => $areaModel->obtenerActivas(),
-            'totalPedidos'  => $total,
+            'totalPedidos'  => $activos + $porAprobar + $completados,
             'pctActivos'    => $pctActivos,
             'pctPorAprobar' => $pctPorAprobar,
             'pctCompletados'=> $pctCompletados,

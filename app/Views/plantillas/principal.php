@@ -41,7 +41,7 @@
     <div id="toast"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-     <script src="<?= base_url('scripts/nucleo/app.js') ?>"></script>
+     <script src="<?= base_url('recursos/scripts/nucleo/app.js') ?>"></script>
     <?= $this->renderSection('scripts') ?>
 
 </body>
