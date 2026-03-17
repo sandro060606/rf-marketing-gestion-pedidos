@@ -15,26 +15,22 @@ $routes->post('/login', 'Autenticacion\AuthController::autenticar');
 $routes->get('/logout', 'Autenticacion\AuthController::logout');
 
 
-// ── ADMINISTRADOR ─────────────────────────────────────────
+// ADMINISTRADOR
 $routes->group('admin', ['filter' => 'sesion'], function($routes) {
     // Panel principal / dashboard
     $routes->get('panel', 'Administrador\DashboardController::index');
 });
-
-// ── RESPONSABLE ───────────────────────────────────────────
+// RESPONSABLE
 $routes->group('responsable', ['filter' => 'sesion'], function($routes) {
     // Pedidos de su área
     $routes->get('pedidos-area',        'Responsable\PedidosAreaController::index');
 });
-
-// ── EMPLEADO ──────────────────────────────────────────────
+// EMPLEADO
 $routes->group('empleado', ['filter' => 'sesion'], function($routes) {
     // Pedidos asignados
     $routes->get('mis-pedidos',         'Empleado\PedidosController::index');
 });
- 
- 
-// ── CLIENTE ───────────────────────────────────────────────
+//CLIENTE
 $routes->group('cliente'/* , ['filter' => 'sesion'] */, function($routes) {
 
     // Ver sus pedidos
@@ -51,4 +47,7 @@ $routes->group('cliente'/* , ['filter' => 'sesion'] */, function($routes) {
 
     //Subir archivo adjunto a un pedido
     $routes->post('mis-pedidos/(:num)/archivos', 'Cliente\FormularioController::subirArchivo/$1');
+
+    // Notificaciones
+    $routes->get('notificaciones', 'Cliente\NotificacionesController::index');
 });
