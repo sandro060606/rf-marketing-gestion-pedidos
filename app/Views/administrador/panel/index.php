@@ -52,24 +52,27 @@
 <div class="row g-2 mb-1">
     <?php foreach ($empresas as $empresa) : ?>
     <div class="col-6">
-        <div class="emp-card">
- 
-            <!-- Cabecera: inicial + nombre + badge -->
+        
+        <div class="emp-card" style="border-top: 3px solid <?= $empresa['color'] ?>;">
+            
             <div class="emp-head">
-                <div class="emp-inicial"><?= esc($empresa['inicial']) ?></div>
-                <div>
+                <div class="emp-inicial" style="background: <?= $empresa['color'] ?>; color: #000;">
+                    <?= $empresa['inicial'] ?>
+                </div>
+                
+                <div class="emp-info">
                     <div class="emp-nombre"><?= esc($empresa['nombreempresa']) ?></div>
                     <div class="emp-ruc">RUC <?= esc($empresa['ruc']) ?></div>
                 </div>
+
                 <?php if ($empresa['por_aprobar'] > 0) : ?>
                     <div class="emp-badge ms-auto">
-                        <span class="badge-punto"></span>
+                        <span class="badge-punto" style="background: <?= $empresa['color'] ?>;"></span>
                         <?= $empresa['por_aprobar'] ?> nueva<?= $empresa['por_aprobar'] > 1 ? 's' : '' ?>
                     </div>
                 <?php endif ?>
             </div>
- 
-            <!-- Stats -->
+
             <div class="emp-stats">
                 <div class="emp-stat">
                     <div class="emp-stat-num rojo"><?= $empresa['pendientes'] ?></div>
@@ -84,17 +87,14 @@
                     <div class="emp-stat-label">Completados</div>
                 </div>
             </div>
- 
-            <!-- Botones de áreas -->
+
             <div class="emp-areas">
                 <?php foreach ($areas as $area) : ?>
                     <button class="area-btn"><?= esc($area['nombre']) ?></button>
                 <?php endforeach ?>
             </div>
- 
-        </div>
-    </div>
-    <?php endforeach ?>
+
+        </div> </div> <?php endforeach ?>
 </div>
  
 <?php endif ?>
@@ -111,14 +111,14 @@
             <?php $max = max(1, ...array_map(fn($e) => $e['total'], $empresas ?: [['total'=>1]])) ?>
             <div class="barras-wrap">
                 <?php foreach ($empresas as $e) :
-                    $h = round($e['total'] / $max * 100);
-                ?>
-                <div class="barra-col">
-                    <div class="barra-num"><?= $e['total'] ?></div>
-                    <div class="barra-fill" style="height:<?= $h ?>%"></div>
-                    <div class="barra-label"><?= esc($e['nombreempresa']) ?></div>
-                </div>
-                <?php endforeach ?>
+                   $h = round($e['total'] / $max * 100);
+?>
+<div class="barra-col">
+    <div class="barra-num"><?= $e['total'] ?></div>
+    <div class="barra-fill" style="height:<?= $h ?>%; background: <?= $e['color'] ?>;"></div>
+    <div class="barra-label"><?= esc($e['nombreempresa']) ?></div>
+</div>
+<?php endforeach ?>
             </div>
         </div>
     </div>
