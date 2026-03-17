@@ -31,7 +31,7 @@ $routes->group('empleado', ['filter' => 'sesion'], function($routes) {
     $routes->get('mis-pedidos',         'Empleado\PedidosController::index');
 });
 //CLIENTE
-$routes->group('cliente'/* , ['filter' => 'sesion'] */, function($routes) {
+$routes->group('cliente', ['filter' => 'sesion'], function($routes) {
 
     // Ver sus pedidos
     $routes->get('mis-pedidos', 'Cliente\MisPedidosController::index');

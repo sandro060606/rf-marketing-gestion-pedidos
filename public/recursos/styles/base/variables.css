@@ -1,0 +1,48 @@
+/* Variables globales del sistema RF Marketing */
+
+:root {
+  /*Colores principales  */
+  --rf-amarillo: #f5c400;
+  --rf-amarillo-hover: #e0b300;
+  --rf-negro: #0d0d0d;
+  --rf-gris-oscuro: #1a1a1a;
+  --rf-gris-medio: #2a2a2a;
+  --rf-gris-borde: #333333;
+  --rf-texto: #ffffff;
+  --rf-texto-suave: rgba(255, 255, 255, 0.55);
+  /* Estados de pedido */
+  --estado-por-aprobar: #f5c400;
+  --estado-en-proceso: #3b82f6;
+  --estado-en-revision: #a855f7;
+  --estado-completado: #22c55e;
+  --estado-cancelado: #ef4444;
+  /* Prioridades */
+  --prioridad-alta: #ef4444;
+  --prioridad-media: #f97316;
+  --prioridad-baja: #22c55e;
+  /* Tipografía */
+  --fuente: "Outfit", sans-serif;
+  /* Layout */
+  --sidebar-ancho: 250px;
+  --topbar-alto: 64px;
+  /* Misc */
+  --radio-sm: 6px;
+  --radio-md: 10px;
+  --radio-lg: 16px;
+  --sombra: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--fuente);
+  background: var(--rf-negro);
+  color: var(--rf-texto);
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+}

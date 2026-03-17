@@ -13,11 +13,11 @@ class MisPedidosController extends Controller
     public function index()
     {
         // Obtener el id del usuario desde la sesión
-        $idUsuario = 8/* session()->get('id') */ ;
+        $idUsuario = session()->get('id');
 
         // Seguridad: si no hay sesión activa, rechazar
         if (!$idUsuario) {
-            return $this->responder(401, 'No autorizado.');
+            return redirect()->to('/login');
         }
 
         $modelo = new PedidoModel();
@@ -25,10 +25,18 @@ class MisPedidosController extends Controller
 
         // Si no tiene pedidos, devolver array vacío
         if (empty($pedidos)) {
-            return $this->responder(200, 'Sin pedidos registrados.', []);
+            return view('cliente/lista', [
+                'titulo' => 'Mis Pedidos',
+                'pedidos' => [],
+                'css_extra' => '<link rel="stylesheet" href="' . base_url('recursos/styles/paginas/mis-pedidos.css') . '">',
+            ]);
         }
 
-        return $this->responder(200, 'Pedidos obtenidos.', $pedidos);
+        return view('cliente/lista', [
+            'titulo' => 'Mis Pedidos',
+            'pedidos' => $pedidos,
+            'css_extra' => '<link rel="stylesheet" href="' . base_url('recursos/styles/paginas/mis_pedidos.css') . '">',
+        ]);
     }
     // Detalle completo de un pedido específico.
     // Incluye datos del formulario original + empleado asignado.
@@ -37,7 +45,7 @@ class MisPedidosController extends Controller
         $idUsuario = session()->get('id');
 
         if (!$idUsuario) {
-            return $this->responder(401, 'No autorizado.');
+            return redirect()->to('/login');
         }
 
         $modelo = new PedidoModel();
@@ -45,10 +53,14 @@ class MisPedidosController extends Controller
 
         // Verificar que el pedido exista
         if (!$pedido) {
-            return $this->responder(404, 'Pedido no encontrado.');
+            return $this->response->setStatusCode(404)->setJSON(['status' => 404, 'mensaje' => 'Pedido no encontrado.']);
         }
 
-        return $this->responder(200, 'Detalle obtenido.', $pedido);
+        return $this->response->setJSON([
+            'status' => 200,
+            'mensaje' => 'Detalle obtenido.',
+            'data' => $pedido,
+        ]);
     }
 
     // Devuelve todos los archivos relacionados al pedido:
@@ -61,7 +73,10 @@ class MisPedidosController extends Controller
         $pedido = $pedidoModel->detallePedido($idPedido);
 
         if (!$pedido) {
-            return $this->responder(404, 'Pedido no encontrado.');
+            return $this->response->setStatusCode(404)->setJSON([
+                'status' => 404,
+                'mensaje' => 'Pedido no encontrado.',
+            ]);
         }
 
         $archivoModel = new ArchivoModel();
@@ -77,21 +92,13 @@ class MisPedidosController extends Controller
         // Entregables → se buscan directamente por idpedido
         $entregables = $archivoModel->listarEntregables($idPedido);
 
-        return $this->responder(200, 'Archivos obtenidos.', [
-            'entradas' => $entradas,    // Archivos del cliente (referencias)
-            'entregables' => $entregables, // Archivos del empleado (resultados)
+        return $this->response->setJSON([
+            'status' => 200,
+            'mensaje' => 'Archivos obtenidos.',
+            'data' => [
+                'entradas' => $archivoModel->listarEntradas($pedidoRaw['idformpedido']),
+                'entregables' => $archivoModel->listarEntregables($idPedido),
+            ],
         ]);
-    }
-
-    // PRIVADO: Formatea todas las respuestas JSON igual
-    private function responder(int $status, string $mensaje, mixed $data = null)
-    {
-        return $this->response
-            ->setStatusCode($status)
-            ->setJSON([
-                'status' => $status,
-                'mensaje' => $mensaje,
-                'data' => $data,
-            ]);
     }
 }
