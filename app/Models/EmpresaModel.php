@@ -54,6 +54,11 @@ class EmpresaModel extends Model
  
         foreach ($empresas as &$empresa) {
             $id = $empresa['id'];
+           // --- ASIGNACIÓN DE COLORES DIFERENTES ---
+            $colores = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFA500'];
+             // Multiplicamos el ID por 3 para que los colores "salten" y sean muy distintos entre sí
+             $empresa['color'] = $colores[($empresa['id'] * 3) % count($colores)];
+
  
             // Pedidos de esta empresa via formulario_pedidos → pedidos
             $base = "SELECT COUNT(*) as total FROM pedidos p

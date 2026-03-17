@@ -1,5 +1,4 @@
-/* public/recursos/scripts/nucleo/app.js
-   Funciones disponibles en todas las páginas del admin */
+/* Funciones disponibles en todas las páginas del admin */
 
 // Muestra un mensaje temporal en la esquina
 function mostrarToast(mensaje, tipo = 'exito') {
