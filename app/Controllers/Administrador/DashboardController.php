@@ -5,6 +5,7 @@ namespace App\Controllers\Administrador;
 use CodeIgniter\Controller;
 use App\Models\PedidoModel;
 use App\Models\EmpresaModel;
+use App\Models\AreaModel;
 
 class DashboardController extends Controller
 {
@@ -12,6 +13,7 @@ class DashboardController extends Controller
     {
         $pedidoModel  = new PedidoModel();
         $empresaModel = new EmpresaModel();
+        $areaModel    = new AreaModel();
 
         // Métricas generales
         $activos     = $pedidoModel->contarPorEstado('en_proceso');
@@ -19,11 +21,9 @@ class DashboardController extends Controller
         $completados = $pedidoModel->contarPorEstado('completado');
         $sinAsignar  = $pedidoModel->contarSinAsignar();
 
-        // Empresas con sus stats
-        $empresas = $empresaModel->obtenerConStats();
 
         // Total para el donut
-        $total = $activos + $porAprobar + $completados;
+        $total          = max(1, $activos + $porAprobar + $completados);
         $pctActivos     = $total > 0 ? round($activos     / $total * 100) : 0;
         $pctPorAprobar  = $total > 0 ? round($porAprobar  / $total * 100) : 0;
         $pctCompletados = $total > 0 ? round($completados / $total * 100) : 0;
@@ -36,12 +36,13 @@ class DashboardController extends Controller
             'porAprobar'    => $porAprobar,
             'completados'   => $completados,
             'sinAsignar'    => $sinAsignar,
-            'empresas'      => $empresas,
+            'empresas'      => $empresaModel->obtenerConStats(),
+            'areas'         => $areaModel->obtenerActivas(),
             'totalPedidos'  => $total,
             'pctActivos'    => $pctActivos,
             'pctPorAprobar' => $pctPorAprobar,
             'pctCompletados'=> $pctCompletados,
         ]);
     }
-    
+
 }
