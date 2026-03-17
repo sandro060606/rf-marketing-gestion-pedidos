@@ -13,21 +13,35 @@ class DashboardController extends Controller
         $pedidoModel  = new PedidoModel();
         $empresaModel = new EmpresaModel();
 
-        $datos = [
-            'titulo'       => 'Dashboard',
-            'tituloPagina' => 'DASHBOARD',
-            'paginaActual' => 'dashboard',
+        // Métricas generales
+        $activos     = $pedidoModel->contarPorEstado('en_proceso');
+        $porAprobar  = $pedidoModel->contarPorEstado('por_aprobar');
+        $completados = $pedidoModel->contarPorEstado('completado');
+        $sinAsignar  = $pedidoModel->contarSinAsignar();
 
-            // Métricas desde la BD
-        'activos'     => $pedidoModel->contarPorEstado('en_proceso'),
-        'porAprobar'  => $pedidoModel->contarPorEstado('por_aprobar'),
-        'completados' => $pedidoModel->contarPorEstado('completado'),
-        'sinAsignar'  => $pedidoModel->contarSinAsignar(),
+        // Empresas con sus stats
+        $empresas = $empresaModel->obtenerConStats();
 
-            // Lista de empresas
-            'empresas'    => $empresaModel->obtenerTodas(),
-        ];
+        // Total para el donut
+        $total = $activos + $porAprobar + $completados;
+        $pctActivos     = $total > 0 ? round($activos     / $total * 100) : 0;
+        $pctPorAprobar  = $total > 0 ? round($porAprobar  / $total * 100) : 0;
+        $pctCompletados = $total > 0 ? round($completados / $total * 100) : 0;
 
-        return view('administrador/panel/index', $datos);
+        return view('administrador/panel/index', [
+            'titulo'        => 'Dashboard',
+            'tituloPagina'  => 'DASHBOARD',
+            'paginaActual'  => 'dashboard',
+            'activos'       => $activos,
+            'porAprobar'    => $porAprobar,
+            'completados'   => $completados,
+            'sinAsignar'    => $sinAsignar,
+            'empresas'      => $empresas,
+            'totalPedidos'  => $total,
+            'pctActivos'    => $pctActivos,
+            'pctPorAprobar' => $pctPorAprobar,
+            'pctCompletados'=> $pctCompletados,
+        ]);
     }
+    
 }
