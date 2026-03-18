@@ -4,11 +4,11 @@
 .bebas {
   font-family: "Bebas Neue", sans-serif;
 }
-/* Sección título — igual que el admin */
+/* Sección título */
 .seccion-titulo {
   font-size: 9px;
   font-weight: 700;
-  color: #444;
+  color: #888;
   letter-spacing: 3px;
   text-transform: uppercase;
   display: flex;
@@ -26,10 +26,10 @@
   height: 1px;
   background: #1e1e1e;
 }
-/* Métricas — mismo estilo admin */
+/* Métricas */
 .met-label {
   font-size: 11px;
-  color: #888;
+  color: #aaa;
   margin-bottom: 6px;
 }
 .met-num {
@@ -40,7 +40,7 @@
 }
 .met-sub {
   font-size: 11px;
-  color: #555;
+  color: #aaa;
   margin-top: 4px;
 }
 /* Colores — igual que admin */
