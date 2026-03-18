@@ -21,14 +21,14 @@ class EmpresaModel extends Model
     {
         $db = \Config\Database::connect();
  
-        $empresas = $this->select('id, nombreempresa, ruc')->findAll();
+        $empresas = $this->select('id, nombreempresa, ruc, correo, telefono')->findAll();
  
         foreach ($empresas as &$empresa) {
             $id = $empresa['id'];
            // --- ASIGNACIÓN DE COLORES DIFERENTES ---
             $colores = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFA500'];
 
-             $empresa['color'] = $colores[($empresa['id'] * 3) % count($colores)];
+             $empresa['color'] = $colores[$id % count($colores)];
 
  
             // Pedidos de esta empresa via formulario_pedidos → pedidos
@@ -43,7 +43,7 @@ class EmpresaModel extends Model
             $empresa['total']       = $empresa['activos'] + $empresa['completados'] + $empresa['por_aprobar'];
  
             // Inicial para el ícono
-            $empresa['inicial'] = strtoupper(substr($empresa['nombreempresa'], 0, 1));
+            $empresa['inicial'] = strtoupper(substr($empresa['nombreempresa']?? 'E', 0, 1));
         }
  
         return $empresas;

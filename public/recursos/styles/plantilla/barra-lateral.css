@@ -69,3 +69,46 @@ body {
 /* Layout principal */
 .contenedor-principal { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
 .contenido            { flex: 1; overflow-y: auto; padding: 22px 24px; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.nav-item-dropdown {
+    margin-bottom: 5px;
+}
+
+.nav-sub-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: rgba(0,0,0,0.2); /* Fondo un poco más oscuro para los hijos */
+    border-radius: 4px;
+    margin: 0 10px;
+}
+
+.nav-sub-menu.show {
+    max-height: 500px;
+    margin-top: 5px;
+    padding-bottom: 5px;
+}
+
+/* Rotación de la flecha */
+.rotate-180 {
+    transform: rotate(180deg);
+}
