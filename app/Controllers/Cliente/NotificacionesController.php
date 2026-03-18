@@ -11,28 +11,20 @@ class NotificacionesController extends Controller
     // Se generan automáticamente cuando el admin cambia el estado del pedido
 
     public function index()
-    { 
-        $idUsuario = 8/* session()->get('id') */;
+    {
+        $idUsuario = session()->get('id');
 
-        $modelo        = new NotificacionesModel();
-        $notificaciones = $modelo->listarPorUsuario($idUsuario);
-
-        if (empty($notificaciones)) {
-            return $this->responder(200, 'Sin notificaciones.', []);
+        if (!$idUsuario) {
+            return redirect()->to('/login');
         }
 
-        return $this->responder(200, 'Notificaciones obtenidas.', $notificaciones);
-    }
-    
-    // PRIVADO: Respuesta JSON estándar
-    private function responder(int $status, string $mensaje, mixed $data = null)
-    {
-        return $this->response
-            ->setStatusCode($status)
-            ->setJSON([
-                'status'  => $status,
-                'mensaje' => $mensaje,
-                'data'    => $data,
-            ]);
+        $modelo = new NotificacionesModel();
+        $notificaciones = $modelo->listarPorUsuario($idUsuario);
+
+        return view('cliente/notificaciones', [
+            'titulo' => 'Notificaciones',
+            'notificaciones' => $notificaciones ?? [],
+            'css_extra' => '<link rel="stylesheet" href="' . base_url('recursos/styles/paginas/notificaciones.css') . '">',
+        ]);
     }
 }

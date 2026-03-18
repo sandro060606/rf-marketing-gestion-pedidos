@@ -1,19 +1,15 @@
-<?php
-// Hereda: plantillas/cliente.php
-// Recibe: $pedidos (array), $titulo (string)
-?>
 <?= $this->extend('plantillas/cliente') ?>
 <?= $this->section('contenido') ?>
 
 <!-- Encabezado -->
-<div class="seccion-titulo">MIS PEDIDOS</div>
+<div class="seccion-titulo" style="font-size:14px;">MIS PEDIDOS</div>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <div>
-        <h2 class="bebas mb-0" style="font-size:2rem; letter-spacing:2px;">
+        <h2 class="bebas mb-0" style="font-size:2rem; letter-spacing:1px;">
             <?= session()->get('nombre') ?>
         </h2>
-        <p class="text-muted small mb-0" style="font-size:11px;">
+        <p class="small mb-0" style="font-size:14px; color:#aaa;">
             <?= session()->get('area') ?? 'Cliente' ?> — Historial de requerimientos
         </p>
     </div>
@@ -23,7 +19,7 @@
 </div>
 
 <!-- Métricas resumen -->
-<div class="seccion-titulo">RESUMEN</div>
+<div class="seccion-titulo" style="font-size:14px;">RESUMEN</div>
 <div class="row g-2 mb-4">
     <!-- Por Aprobar -->
     <div class="col-6 col-md-3">
@@ -67,7 +63,7 @@
 </div>
 
 <!-- Tabla de pedidos -->
-<div class="seccion-titulo">TODOS LOS PEDIDOS</div>
+<div class="seccion-titulo" style="font-size:14px;">TODOS LOS PEDIDOS</div>
 
 <div class="card" style="overflow:hidden;">
     <!-- Header tabla con buscador -->
@@ -111,7 +107,7 @@
                                     </span>
                                     <?php else: ?>
                                     <!-- El admin aún no procesó este pedido -->
-                                    <span style="color:#555; font-style:italic; font-size:12px;">
+                                    <span style="color:#777; font-style:italic">
                                         Pendiente de revisión
                                     </span>
                                     <?php endif; ?>
@@ -141,8 +137,8 @@
                                     <?php endif; ?>
                             </td>
 
-                            <!-- substr recorta timestamp → solo fecha -->
-                            <td style="color:#555; font-size:11px;">
+                            <!-- Recorta timestamp → solo fecha -->
+                            <td style="color:#777; font-size:11px;">
                                     <?= substr($pedido['fechacreacion'], 0, 10) ?>
                             </td>
 
