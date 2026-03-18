@@ -40,6 +40,7 @@ $routes->group('cliente', ['filter' => 'sesion'], function($routes) {
     // GET  → devuelve servicios disponibles + datos empresa
     // POST → crea el pedido (siguiente paso)
     $routes->get('nuevo-pedido',  'Cliente\FormularioController::index');
+    $routes->get('nuevo-pedido/(:num)', 'Cliente\FormularioController::formulario/$1');
     $routes->post('nuevo-pedido', 'Cliente\FormularioController::guardar');
 
     // Archivos de un pedido (entradas + entregables)
