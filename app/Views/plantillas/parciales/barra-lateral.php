@@ -8,7 +8,7 @@
 
     <nav>
         <p class="nav-seccion">Principal</p>
-        <a href="<?= site_url('admin/dashboard') ?>" class="nav-enlace <?= ($paginaActual ?? '') === 'dashboard' ? 'activo' : '' ?>">
+        <a href="<?= site_url('admin/panel') ?>" class="nav-enlace <?= ($paginaActual ?? '') === 'dashboard' ? 'activo' : '' ?>">
             <i class="bi bi-grid-1x2"></i> Dashboard
         </a>
 
