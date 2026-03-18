@@ -48,6 +48,13 @@ class AuthController extends Controller
                 ->with('error', 'Usuario o contraseña incorrectos.');
         }
 
+        // Buscar empresa del cliente (solo si es cliente)
+        $empresa = null;
+        if ($usuarioDB['rol'] === 'cliente') {
+            $empresaModel = new \App\Models\EmpresaModel();
+            $empresa = $empresaModel->buscarPorUsuario($usuarioDB['id']);
+        }
+        
         // Guarda los datos del usuario en la sesión
         session()->set([
             'autenticado' => true,               // Flag que usa el filtro
@@ -60,6 +67,7 @@ class AuthController extends Controller
             'idarea' => $usuarioDB['idarea'],
             'area' => $usuarioDB['area'],  // nombre del área (para mostrar en el panel)
             'esresponsable' => $usuarioDB['esresponsable'],
+            'empresa' => $empresa['nombreempresa'] ?? null,
         ]);
         //Redirigir por Rol
         return $this->redirigirPorRol($usuarioDB['rol']);
@@ -81,7 +89,7 @@ class AuthController extends Controller
             case 'responsable':
                 return redirect()->to('/responsable/pedidos-area');
             case 'empleado':
-                return redirect()->to('/empleado/mis-pedidos');    
+                return redirect()->to('/empleado/mis-pedidos');
             case 'cliente':
                 return redirect()->to('/cliente/mis-pedidos');
             default:

@@ -16,21 +16,13 @@ class FormularioController extends Controller
     // Devuelve servicios disponibles + datos de la empresa
     public function index()
     {
-        $idUsuario = 8/* session()->get('id') */ ;
-
-        $empresaModel = new EmpresaModel();
-        $empresa = $empresaModel->buscarPorUsuario($idUsuario);
-
-        if (!$empresa) {
-            return $this->responder(404, 'No tienes una empresa registrada.');
-        }
-
         $servicioModel = new ServicioModel();
         $servicios = $servicioModel->listarActivos();
 
-        return $this->responder(200, 'Datos para nuevo pedido.', [
-            'empresa' => $empresa,
+        return view('cliente/nuevo-pedido', [
+            'titulo' => 'Nuevo Pedido',
             'servicios' => $servicios,
+            'css_extra' => '<link rel="stylesheet" href="' . base_url('recursos/styles/paginas/nuevo-pedido.css') . '">',
         ]);
     }
 
@@ -41,14 +33,15 @@ class FormularioController extends Controller
     // 4. Notifica al administrador del nuevo pedido
     public function guardar()
     {
-        $idUsuario = 8/* session()->get('id') */ ;
+        $idUsuario = session()->get('id');
 
         // Obtener empresa del cliente
         $empresaModel = new EmpresaModel();
         $empresa = $empresaModel->buscarPorUsuario($idUsuario);
 
         if (!$empresa) {
-            return $this->responder(404, 'No tienes una empresa registrada.');
+            return redirect()->back()
+                ->with('error', 'No tienes una empresa registrada.');
         }
 
         // Obtener datos del POST
@@ -68,7 +61,9 @@ class FormularioController extends Controller
 
         foreach ($camposObligatorios as $campo) {
             if (empty($post[$campo])) {
-                return $this->responder(422, "El campo '{$campo}' es obligatorio.");
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', "El campo '{$campo}' es obligatorio.");
             }
         }
 
@@ -103,7 +98,9 @@ class FormularioController extends Controller
         $idFormulario = $formularioModel->crear($datos);
 
         if (!$idFormulario) {
-            return $this->responder(500, 'Error al crear el pedido. Intenta de nuevo.');
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Error al crear el pedido. Intenta de nuevo.');
         }
 
         // Crear pedido en estado 'por_aprobar'
@@ -120,11 +117,9 @@ class FormularioController extends Controller
             "La empresa {$empresa['nombreempresa']} ha enviado un nuevo pedido: \"{$post['titulo']}\" — pendiente de revisión.",
             'estado'
         );
-
-        return $this->responder(201, 'Pedido creado correctamente.', [
-            'idformulario' => $idFormulario,
-            'idpedido' => $idPedido,
-        ]);
+        // Éxito → redirigir a mis-pedidos con mensaje
+        return redirect()->to('/cliente/mis-pedidos')
+            ->with('exito', '¡Pedido enviado correctamente! Te notificaremos cuando sea revisado.');
     }
 
     // El cliente sube archivos de referencia adjuntos al formulario de su pedido (logos, briefs, fotos, etc.)
@@ -137,7 +132,10 @@ class FormularioController extends Controller
         $pedidoRaw = $pedidoModel->find($idPedido);
 
         if (!$pedidoRaw) {
-            return $this->responder(404, 'Pedido no encontrado.');
+            return $this->response->setStatusCode(404)->setJSON([
+                'status' => 404,
+                'mensaje' => 'Pedido no encontrado.',
+            ]);
         }
 
         // Obtener el archivo del request 
@@ -145,7 +143,10 @@ class FormularioController extends Controller
 
         // Verificar que se envió un archivo
         if (!$archivo || !$archivo->isValid()) {
-            return $this->responder(422, 'No se recibió ningún archivo válido.');
+            return $this->response->setStatusCode(422)->setJSON([
+                'status' => 422,
+                'mensaje' => 'No se recibió ningún archivo válido.',
+            ]);
         }
 
         // Validar extensión
@@ -153,13 +154,19 @@ class FormularioController extends Controller
         $extension = strtolower($archivo->getExtension());
 
         if (!in_array($extension, $extensionesPermitidas)) {
-            return $this->responder(422, "Extensión '.{$extension}' no permitida. Usa: " . implode(', ', $extensionesPermitidas));
+            return $this->response->setStatusCode(422)->setJSON([
+                'status' => 422,
+                'mensaje' => "Extensión '.{$extension}' no permitida.",
+            ]);
         }
 
         //  Validar tamaño (máx 10MB = 10 * 1024 * 1024) 
         $tamanoMaximo = 50 * 1024 * 1024;
         if ($archivo->getSize() > $tamanoMaximo) {
-            return $this->responder(422, 'El archivo supera el tamaño máximo de 10MB.');
+            return $this->response->setStatusCode(422)->setJSON([
+                'status' => 422,
+                'mensaje' => 'El archivo supera el tamaño máximo de 50MB.',
+            ]);
         }
 
         // Generar nombre único para evitar duplicados 
@@ -171,7 +178,10 @@ class FormularioController extends Controller
         $carpetaDestino = FCPATH . 'archivos-subidos/entradas/';
 
         if (!$archivo->move($carpetaDestino, $nombreUnico)) {
-            return $this->responder(500, 'Error al guardar el archivo. Intenta de nuevo.');
+            return $this->response->setStatusCode(500)->setJSON([
+                'status' => 500,
+                'mensaje' => 'Error al guardar el archivo.',
+            ]);
         }
 
         // Registrar en la BD
@@ -183,23 +193,34 @@ class FormularioController extends Controller
             $archivo->getSize()
         );
 
-        return $this->responder(201, 'Archivo subido correctamente.', [
-            'id' => $idArchivo,
-            'nombre' => $archivo->getClientName(),
-            'ruta' => 'archivos-subidos/entradas/' . $nombreUnico,
-            'tamano' => $archivo->getSize(),
+        return $this->response->setStatusCode(201)->setJSON([
+            'status' => 201,
+            'mensaje' => 'Archivo subido correctamente.',
+            'data' => [
+                'id' => $idArchivo,
+                'nombre' => $archivo->getClientName(),
+                'ruta' => 'archivos-subidos/entradas/' . $nombreUnico,
+                'tamano' => $archivo->getSize(),
+            ],
         ]);
     }
-
-    // PRIVADO: Respuesta JSON estándar
-    private function responder(int $status, string $mensaje, mixed $data = null)
+    public function formulario(int $idServicio)
     {
-        return $this->response
-            ->setStatusCode($status)
-            ->setJSON([
-                'status' => $status,
-                'mensaje' => $mensaje,
-                'data' => $data,
-            ]);
+        $servicioModel = new ServicioModel();
+        $servicio = $servicioModel->find($idServicio);
+
+        if (!$servicio) {
+            return redirect()->to('/cliente/nuevo-pedido');
+        }
+
+        $empresaModel = new EmpresaModel();
+        $empresa = $empresaModel->buscarPorUsuario(session()->get('id'));
+
+        return view('cliente/formulario-pedido', [
+            'titulo' => 'Nuevo Pedido',
+            'servicio' => $servicio,
+            'empresa' => $empresa,
+            'css_extra' => '<link rel="stylesheet" href="' . base_url('recursos/styles/paginas/nuevo-pedido.css') . '">',
+        ]);
     }
 }
