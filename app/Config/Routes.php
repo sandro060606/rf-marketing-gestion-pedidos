@@ -22,8 +22,6 @@ $routes->group('admin', ['filter' => 'sesion'], function($routes) {
 
 // Empresas
     $routes->get('empresas', 'Administrador\EmpresasController::index');
-    
-    $routes->get('empresas/(:num)', 'Administrador\EmpresasController::detalle/$1'); 
 });
 // RESPONSABLE
 $routes->group('responsable', ['filter' => 'sesion'], function($routes) {

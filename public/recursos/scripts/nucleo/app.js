@@ -54,12 +54,18 @@ function filtrarTabla(input, idTbody) {
 
 
 
+// En tu archivo JS global o al final de la vista
+document.addEventListener('click', function(e) {
+    // Si haces clic en el botón de despliegue
+    if (e.target.closest('#btn-empresas-toggle')) {
+        const menu = document.getElementById('menu-empresas');
+        const arrow = document.querySelector('#btn-empresas-toggle .arrow-icon');
+        
+        menu.classList.toggle('show');
+        if (arrow) arrow.classList.toggle('rotate-180');
+        return;
+    }
 
-
-document.getElementById('btn-empresas').addEventListener('click', function() {
-    const menu = document.getElementById('menu-empresas');
-    const arrow = this.querySelector('.arrow-icon');
-    
-    menu.classList.toggle('show');
-    arrow.classList.toggle('rotate-180');
+    // Si haces clic en cualquier enlace <a>, NO HACEMOS NADA. 
+    // Dejamos que el navegador cambie de página solo.
 });
