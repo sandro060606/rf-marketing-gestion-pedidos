@@ -45,3 +45,21 @@ function filtrarTabla(input, idTbody) {
         fila.style.display = fila.textContent.toLowerCase().includes(texto) ? '' : 'none'
     })
 }
+
+
+
+
+
+
+
+
+
+
+
+document.getElementById('btn-empresas').addEventListener('click', function() {
+    const menu = document.getElementById('menu-empresas');
+    const arrow = this.querySelector('.arrow-icon');
+    
+    menu.classList.toggle('show');
+    arrow.classList.toggle('rotate-180');
+});
