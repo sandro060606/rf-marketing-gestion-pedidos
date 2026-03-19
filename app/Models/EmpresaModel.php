@@ -45,7 +45,8 @@ class EmpresaModel extends Model
         return $this->select('id, nombreempresa, ruc, correo, telefono')
                     ->findAll();
     }
-// Para el dashboard: empresas con conteo de pedidos por estado
+    
+    // Para el dashboard: empresas con conteo de pedidos por estado
     public function obtenerConStats(): array
     {
         $db = \Config\Database::connect();

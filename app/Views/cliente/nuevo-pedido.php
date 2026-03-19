@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 // ARCHIVO: app/Views/cliente/nuevo-pedido.php
 // Hereda: plantillas/cliente.php
@@ -5,12 +6,21 @@
 // Pantalla 0 — El cliente elige el tipo de servicio antes del wizard
 ?>
 
+=======
+<!-- 
+Selector de Requerimientos
+Categoriza visualmente los servicios disponibles y establece las políticas de tiempos de entrega-->
+
+<!-- Hereda -->
+>>>>>>> 701a192 (Reestructuracion de Modulos, realizando Buenas Practicas con el Codigo)
 <?= $this->extend('plantillas/cliente') ?>
+<!-- Plantilla para la Inyeccion -->
 <?= $this->section('contenido') ?>
 
 <!-- Encabezado -->
-<div class="seccion-titulo"  style="font-size:13px; color:#aaa;" >NUEVO PEDIDO</div>
+<div class="seccion-titulo" style="font-size:13px; color:#aaa;">NUEVO PEDIDO</div>
 
+<!-- Titulo Principal -->
 <div class="mb-4">
     <h2 class="bebas mb-0" style="font-size:2rem; letter-spacing:2px;">
         ¿QUÉ TIPO DE REQUERIMIENTO NECESITAS?
@@ -20,7 +30,7 @@
     </p>
 </div>
 
-<!--  Consideraciones importantes -->
+<!--  Politicas de Tiempo -->
 <div class="aviso-card mb-4">
     <div class="aviso-icono"><i class="bi bi-info-circle-fill"></i></div>
     <div>
@@ -36,62 +46,35 @@
     </div>
 </div>
 
-<!-- Tarjetas de servicio -->
+<!-- Tarjetas de servicio Dinamico -->
 <!-- Los servicios vienen de la BD via $servicios (array)-->
-<div class="seccion-titulo" style="font-size:13px; color:#aaa;" >SELECCIONA UN SERVICIO</div>
+<div class="seccion-titulo" style="font-size:13px; color:#aaa;">SELECCIONA UN SERVICIO</div>
 
 <div class="servicios-grid">
-    <?php foreach ($servicios as $servicio): ?>
-
     <?php
-    // Asignar ícono y color según el nombre del servicio
-    $nombre = strtolower($servicio['nombre']);
-    if (str_contains($nombre, 'diseño') || str_contains($nombre, 'grafico') || str_contains($nombre, 'gráfico')):
-        $icono = 'bi-palette-fill';
-        $color = '#F5C400';
-        $colorBg = 'rgba(245,196,0,0.08)';
-        $colorBorder = 'rgba(245,196,0,0.2)';
-        $tag = 'DISEÑO GRÁFICO';
-    elseif (str_contains($nombre, 'audio') || str_contains($nombre, 'video') || str_contains($nombre, 'visual')):
-        $icono = 'bi-camera-video-fill';
-        $color = '#60a5fa';
-        $colorBg = 'rgba(96,165,250,0.08)';
-        $colorBorder = 'rgba(96,165,250,0.2)';
-        $tag = 'AUDIOVISUAL';
-    else:
-        $icono = 'bi-briefcase-fill';
-        $color = '#c084fc';
-        $colorBg = 'rgba(192,132,252,0.08)';
-        $colorBorder = 'rgba(192,132,252,0.2)';
-        $tag = 'SERVICIO';
-    endif;
-    ?>
-
-    <a href="<?= base_url('cliente/nuevo-pedido/' . $servicio['id']) ?>"
-       class="servicio-card"
-       style="--card-color: <?= $color ?>; --card-bg: <?= $colorBg ?>; --card-border: <?= $colorBorder ?>;">
-
-        <!-- Ícono grande -->
-        <div class="servicio-icono">
-            <i class="bi <?= $icono ?>"></i>
-        </div>
-
-        <!-- Info -->
-        <div class="servicio-info">
-            <span class="servicio-tag"><?= $tag ?></span>
-            <h3 class="servicio-nombre bebas"><?= esc($servicio['nombre']) ?></h3>
-            <?php if (!empty($servicio['descripcion'])): ?>
-                <p class="servicio-desc" style="font-size:13px; color:#aaa;"><?= esc($servicio['descripcion']) ?></p>
-            <?php endif; ?>
-        </div>
-
-        <!-- Flecha -->
-        <div class="servicio-arrow">
-            <i class="bi bi-arrow-right-circle-fill"></i>
-        </div>
-
-    </a>
-
+    foreach ($servicios as $servicio):
+        $estilo = obtener_estilo_servicio($servicio['nombre']);
+        ?>
+        <!-- Genera la ruta absoluta hacia el formulario del servicio -->
+        <a href="<?= base_url('cliente/nuevo-pedido/' . $servicio['id']) ?>" class="servicio-card"
+            style="--card-color: <?= $estilo['color'] ?>; --card-bg: <?= $estilo['bg'] ?>; --card-border: <?= $estilo['border'] ?>;">
+            <!-- Ícono grande -->
+            <div class="servicio-icono">
+                <i class="bi <?= $estilo['icono'] ?>"></i>
+            </div>
+            <!-- Info -->
+            <div class="servicio-info">
+                <span class="servicio-tag"><?= $estilo['tag'] ?></span>
+                <h3 class="servicio-nombre bebas"><?= esc($servicio['nombre']) ?></h3>
+                <?php if (!empty($servicio['descripcion'])): ?>
+                    <p class="servicio-desc" style="font-size:13px; color:#aaa;"><?= esc($servicio['descripcion']) ?></p>
+                <?php endif; ?>
+            </div>
+            <!-- Flecha -->
+            <div class="servicio-arrow">
+                <i class="bi bi-arrow-right-circle-fill"></i>
+            </div>
+        </a>
     <?php endforeach; ?>
 </div>
 

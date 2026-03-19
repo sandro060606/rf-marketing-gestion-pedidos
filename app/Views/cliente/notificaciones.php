@@ -1,4 +1,10 @@
+<!--
+Notificaciones sobre los Pedidos del Cliente
+Muestra Notificaciones sobre los diferentes estados sobre el Cliclo de un Pedido -->
+
+<!-- Heredado -->
 <?= $this->extend('plantillas/cliente') ?>
+<!-- Plantilla para Inyeccion Datos -->
 <?= $this->section('contenido') ?>
 
 <!-- Encabezado -->
@@ -12,8 +18,9 @@
             Actualizaciones sobre el estado de tus pedidos
         </p>
     </div>
-    <!-- Métricas rápidas — aprovecha el espacio horizontal -->
+    <!-- Métricas rápidas -->
     <div class="d-flex gap-4 align-items-center">
+        <!-- Cuenta alertas de tipo 'estado' (cambios de proceso) -->
         <div class="text-center">
             <div class="bebas" style="font-size:2.8rem; color:#F5C400; line-height:1;">
                 <?= count(array_filter($notificaciones, fn($n) => $n['tipoalerta'] === 'estado')) ?>
@@ -22,6 +29,7 @@
                 Estado</div>
         </div>
         <div style="width:1px; height:40px; background:#1e1e1e;"></div>
+        <!-- Cuenta alertas de tipo 'asignacion' (nuevo responsable) -->
         <div class="text-center">
             <div class="bebas" style="font-size:2.8rem; color:#60a5fa; line-height:1;">
                 <?= count(array_filter($notificaciones, fn($n) => $n['tipoalerta'] === 'asignacion')) ?>
@@ -30,6 +38,7 @@
                 Asignación</div>
         </div>
         <div style="width:1px; height:40px; background:#1e1e1e;"></div>
+        <!-- Conteo total del array -->
         <div class="text-center">
             <div class="bebas" style="font-size:2.8rem; color:#f0f0f0; line-height:1;">
                 <?= count($notificaciones) ?>
@@ -47,39 +56,25 @@
     <!-- Estado vacío -->
     <div class="card p-5 text-center estado-vacio">
         <i class="bi bi-bell-slash"></i>
-        <p>No tienes notificaciones aún.</p>
+        <p>No tienes notificaciones aún</p>
     </div>
 
 <?php else: ?>
+    <!-- Listado de Notificaciones -->
     <div class="noti-lista">
         <?php foreach ($notificaciones as $noti): ?>
             <div class="noti-card">
-
                 <!-- Ícono según tipo de alerta -->
                 <div class="noti-icono tipo-<?= $noti['tipoalerta'] ?>">
-                    <?php
-                    $asunto = strtolower($noti['asunto']);
-                    if (str_contains($asunto, 'proceso') || str_contains($asunto, 'asignado')):
-                        ?>
-                        <i class="bi bi-arrow-repeat" style="color:#60a5fa"></i>
-                    <?php elseif (str_contains($asunto, 'completado') || str_contains($asunto, 'aprobado')): ?>
-                        <i class="bi bi-check-circle-fill" style="color:#22c55e"></i>
-                    <?php elseif (str_contains($asunto, 'revisión') || str_contains($asunto, 'revision')): ?>
-                        <i class="bi bi-eye-fill" style="color:#F5C400"></i>
-                    <?php elseif (str_contains($asunto, 'cancelado')): ?>
-                        <i class="bi bi-x-circle-fill" style="color:#ef4444"></i>
-                    <?php else: ?>
-                        <i class="bi bi-bell-fill"></i>
-                    <?php endif; ?>
+                    <?= render_icono_notificacion($noti['asunto']) ?>
                 </div>
-
                 <!-- Contenido -->
                 <div class="noti-contenido">
                     <div class="noti-top">
                         <span class="noti-asunto"><?= esc($noti['asunto']) ?></span>
-                        <!--Recorta el timestamp a solo la fecha -->
-                        <span class="noti-fecha"><?= substr($noti['fechaenvio'], 0, 10) ?></span>
+                        <span class="noti-fecha"><?= formato_fecha($noti['fechaenvio']) ?></span>
                     </div>
+                    <!-- Cuerpo del Mensaje enviado por el Sistema -->
                     <p class="noti-mensaje"><?= esc($noti['mensaje']) ?></p>
                     <!-- Pedido relacionado -->
                     <div class="noti-pedido">
@@ -87,7 +82,6 @@
                         <?= esc($noti['pedido']) ?>
                     </div>
                 </div>
-
             </div>
         <?php endforeach; ?>
     </div>

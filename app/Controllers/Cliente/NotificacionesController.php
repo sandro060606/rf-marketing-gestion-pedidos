@@ -7,20 +7,25 @@ use App\Models\NotificacionesModel;
 
 class NotificacionesController extends Controller
 {
-    // Lista todas las notificaciones del cliente autenticado
-    // Se generan automáticamente cuando el admin cambia el estado del pedido
-
+    /**
+     * Muestra el historial de alertas del cliente Autenticado
+     * @return string|\CodeIgniter\HTTP\RedirectResponse
+     */
     public function index()
-    {
+    {   
+        // Recuperar el Id Usuario Logeado
         $idUsuario = session()->get('id');
-
+        
+        // Validar
         if (!$idUsuario) {
             return redirect()->to('/login');
         }
 
+        //Instanciar y Obtener las Notificaciones Cliente (listarPorUsuario)
         $modelo = new NotificacionesModel();
         $notificaciones = $modelo->listarPorUsuario($idUsuario);
 
+        //Retornar la Vista con Datos
         return view('cliente/notificaciones', [
             'titulo' => 'Notificaciones',
             'notificaciones' => $notificaciones ?? [],

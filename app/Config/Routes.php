@@ -25,35 +25,37 @@ $routes->group('admin', ['filter' => 'sesion'], function($routes) {
     // Usuarios
     $routes->get('usuarios', 'Administrador\UsuariosController::index');
 });
+
 // RESPONSABLE
 $routes->group('responsable', ['filter' => 'sesion'], function($routes) {
     // Pedidos de su área
     $routes->get('pedidos-area',        'Responsable\PedidosAreaController::index');
 });
+
 // EMPLEADO
 $routes->group('empleado', ['filter' => 'sesion'], function($routes) {
     // Pedidos asignados
     $routes->get('mis-pedidos',         'Empleado\PedidosController::index');
 });
-//CLIENTE
+
+/**
+ * Grupo de Rutas para el Panel del Cliente
+ */
 $routes->group('cliente', ['filter' => 'sesion'], function($routes) {
 
-    // Ver sus pedidos
+    // Módulo: Historial y Detalles
+    // Listado principal de requerimientos del cliente
     $routes->get('mis-pedidos', 'Cliente\MisPedidosController::index');
+    // Vista detallada de un pedido específico
     $routes->get('mis-pedidos/(:num)', 'Cliente\MisPedidosController::detalle/$1');
 
-    // GET  → devuelve servicios disponibles + datos empresa
-    // POST → crea el pedido (siguiente paso)
+    // Módulo: Generación de Requerimientos
+    // Catálogo de servicios disponibles para iniciar un pedido
     $routes->get('nuevo-pedido',  'Cliente\FormularioController::index');
+    // Carga del formulario específico según el ID del servicio
     $routes->get('nuevo-pedido/(:num)', 'Cliente\FormularioController::formulario/$1');
-    $routes->post('nuevo-pedido', 'Cliente\FormularioController::guardar');
 
-    // Archivos de un pedido (entradas + entregables)
-    $routes->get('mis-pedidos/(:num)/archivos', 'Cliente\MisPedidosController::archivos/$1');
-
-    //Subir archivo adjunto a un pedido
-    $routes->post('mis-pedidos/(:num)/archivos', 'Cliente\FormularioController::subirArchivo/$1');
-
-    // Notificaciones
+    // Módulo: Centro de Notificaciones
+    // Alertas de cambios de estado y mensajes de la agencia
     $routes->get('notificaciones', 'Cliente\NotificacionesController::index');
 });

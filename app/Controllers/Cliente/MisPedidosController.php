@@ -8,46 +8,48 @@ use App\Models\ArchivoModel;
 
 class MisPedidosController extends Controller
 {
-    // Lista todos los pedidos asociados a la empresa
-    // del cliente autenticado.
+    /**
+     * Muestra la lista principal de todos los pedidos de la empresa del cliente
+     * * @return string Devuelve la vista 'cliente/lista', con el array de pedidos
+     * @return string|\CodeIgniter\HTTP\RedirectResponse
+     */
     public function index()
     {
-        // Obtener el id del usuario desde la sesión
+        // (Variable) Obtener el id del usuario desde la sesión
         $idUsuario = session()->get('id');
 
-        // Seguridad: si no hay sesión activa, rechazar
+        // Seguridad: si no hay sesión activa, retornar al Login
         if (!$idUsuario) {
             return redirect()->to('/login');
         }
-
+        //Instancia un Objeto
         $modelo = new PedidoModel();
+        //Llama al Metodo del Modelo (listarPorCliente)
         $pedidos = $modelo->listarPorCliente($idUsuario);
 
-        // Si no tiene pedidos, devolver array vacío
-        if (empty($pedidos)) {
-            return view('cliente/lista', [
-                'titulo' => 'Mis Pedidos',
-                'pedidos' => [],
-                'css_extra' => '<link rel="stylesheet" href="' . base_url('recursos/styles/paginas/mis-pedidos.css') . '">',
-            ]);
-        }
-
+        //Perpara los Datos para la Vista (Mis Pedidos)
         return view('cliente/lista', [
             'titulo' => 'Mis Pedidos',
             'pedidos' => $pedidos,
             'css_extra' => '<link rel="stylesheet" href="' . base_url('recursos/styles/paginas/mis_pedidos.css') . '">',
         ]);
     }
-    // Detalle completo de un pedido específico.
-    // Incluye datos del formulario original + empleado asignado.
+
+    /**
+     * Método para mostrar Info Completo de un pedido específico
+     * @param int $id
+     * @return string|\CodeIgniter\HTTP\RedirectResponse
+     */
     public function detalle(int $id)
     {
+        // (Variable) Obtener el id del usuario desde la sesión
         $idUsuario = session()->get('id');
 
+        // Seguridad: si no hay sesión activa, retornar al Login
         if (!$idUsuario) {
             return redirect()->to('/login');
         }
-
+        //Instacia Modelo y llamada al Metodo (detallePedido)
         $pedidoModel = new PedidoModel();
         $pedido = $pedidoModel->detallePedido($id);
 
@@ -57,14 +59,17 @@ class MisPedidosController extends Controller
                 ->with('error', 'Pedido no encontrado.');
         }
 
+        // Obtiene registro original del pedido (Campos) y gestionar sus archivos adjuntos
         $pedidoRaw = $pedidoModel->find($id);
         $archivoModel = new ArchivoModel();
 
+        // Se agrupan los archivos en dos categorías para la interfaz
         $archivos = [
             'entradas' => $archivoModel->listarEntradas($pedidoRaw['idformpedido']),
             'entregables' => $archivoModel->listarEntregables($id),
         ];
 
+        // Se carga la vista 'cliente/detalle' pasando toda la data recolectada
         return view('cliente/detalle', [
             'titulo' => 'Detalle del Pedido',
             'pedido' => $pedido,
@@ -73,42 +78,4 @@ class MisPedidosController extends Controller
         ]);
     }
 
-    // Devuelve todos los archivos relacionados al pedido:
-    // - 'entradas'    → archivos que el cliente adjuntó al crear el formulario
-    // - 'entregables' → archivos que el empleado subió como resultado del trabajo
-    public function archivos(int $idPedido)
-    {
-        // Verificar que el pedido exista
-        $pedidoModel = new PedidoModel();
-        $pedidoRaw = $pedidoModel->detallePedido($idPedido);
-
-        if (!$pedidoRaw) {
-            return $this->response->setStatusCode(404)->setJSON([
-                'status' => 404,
-                'mensaje' => 'Pedido no encontrado.',
-            ]);
-        }
-
-        $archivoModel = new ArchivoModel();
-
-        // Archivos de entrada → se buscan por idformulario del pedido
-        $pedidoRaw = $pedidoModel->find($idPedido); // Obtiene el registro completo
-        $entradas = [];
-
-        if ($pedidoRaw && $pedidoRaw['idformpedido']) {
-            $entradas = $archivoModel->listarEntradas($pedidoRaw['idformpedido']);
-        }
-
-        // Entregables → se buscan directamente por idpedido
-        $entregables = $archivoModel->listarEntregables($idPedido);
-
-        return $this->response->setJSON([
-            'status' => 200,
-            'mensaje' => 'Archivos obtenidos.',
-            'data' => [
-                'entradas' => $archivoModel->listarEntradas($pedidoRaw['idformpedido']),
-                'entregables' => $archivoModel->listarEntregables($idPedido),
-            ],
-        ]);
-    }
 }
