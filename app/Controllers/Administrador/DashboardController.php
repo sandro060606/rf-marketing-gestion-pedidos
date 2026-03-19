@@ -16,7 +16,8 @@ class DashboardController extends Controller
         $areaModel    = new AreaModel();
 
         // Métricas generales
-        $activos     = $pedidoModel->contarPorEstado('en_proceso');
+        $activos = $pedidoModel    ->whereIn('estado', ['por_aprobar', 'en_proceso'])
+                                   ->countAllResults();
         $porAprobar  = $pedidoModel->contarPorEstado('por_aprobar');
         $completados = $pedidoModel->contarPorEstado('completado');
         $sinAsignar  = $pedidoModel->contarSinAsignar();
