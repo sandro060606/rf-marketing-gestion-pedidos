@@ -1,0 +1,188 @@
+.bebas { font-family: 'Bebas Neue', sans-serif; }
+
+.seccion-titulo {
+    font-size: 9px;
+    font-weight: 700;
+    color: #444;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    margin-top: 22px;
+}
+.seccion-titulo:first-child { margin-top: 0; }
+.seccion-titulo::after { content: ''; flex: 1; height: 1px; background: #1e1e1e; }
+
+.card {
+    background: #111;
+    border: 1px solid #1e1e1e;
+    border-radius: 10px;
+    color: #f0f0f0;
+}
+
+/* Grid de dos columnas */
+.detalle-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .detalle-grid { grid-template-columns: 1fr; }
+}
+
+/* Filas de información */
+.info-fila {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid #1e1e1e;
+    gap: 16px;
+}
+.info-fila:last-child { border-bottom: none; }
+
+.info-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.info-valor {
+    font-size: 13px;
+    color: #f0f0f0;
+    text-align: right;
+}
+
+/* Badges — reutilizados */
+.badge-estado {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+.estado-por_aprobar { background: rgba(245,196,0,0.1);  color: #F5C400; }
+.estado-en_proceso  { background: rgba(96,165,250,0.1); color: #60a5fa; }
+.estado-en_revision { background: rgba(192,132,252,0.1);color: #c084fc; }
+.estado-completado  { background: rgba(34,197,94,0.1);  color: #22c55e; }
+.estado-cancelado   { background: rgba(239,68,68,0.1);  color: #ef4444; }
+
+.badge-prio {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+}
+.prio-alta  { background: rgba(239,68,68,0.1);  color: #ef4444; }
+.prio-media { background: rgba(249,115,22,0.1); color: #f97316; }
+.prio-baja  { background: rgba(34,197,94,0.1);  color: #22c55e; }
+
+.area-btn {
+    padding: 3px 9px;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid #1e1e1e;
+    border-radius: 6px;
+    color: #888;
+    display: inline-block;
+}
+
+/* Avatar usuario */
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #F5C400;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+/* Tags lista */
+.tags-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tag-item {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-size: 11px;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    color: #888;
+}
+
+/* Archivos */
+.archivo-fila {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #1a1a1a;
+}
+.archivo-fila:last-child { border-bottom: none; }
+
+.btn-descargar {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: rgba(34,197,94,0.08);
+    color: #22c55e;
+    text-decoration: none;
+    border: 1px solid rgba(34,197,94,0.2);
+    font-size: 12px;
+    transition: all 0.15s;
+    flex-shrink: 0;
+}
+.btn-descargar:hover {
+    background: rgba(34,197,94,0.15);
+    color: #22c55e;
+}
+
+/* Botón volver */
+.btn-volver {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    color: #888;
+    text-decoration: none;
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: all 0.15s;
+}
+.btn-volver:hover {
+    border-color: rgba(245,196,0,0.3);
+    color: #F5C400;
+}

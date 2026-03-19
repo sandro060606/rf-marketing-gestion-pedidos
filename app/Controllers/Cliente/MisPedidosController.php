@@ -48,18 +48,28 @@ class MisPedidosController extends Controller
             return redirect()->to('/login');
         }
 
-        $modelo = new PedidoModel();
-        $pedido = $modelo->detallePedido($id);
+        $pedidoModel = new PedidoModel();
+        $pedido = $pedidoModel->detallePedido($id);
 
         // Verificar que el pedido exista
         if (!$pedido) {
-            return $this->response->setStatusCode(404)->setJSON(['status' => 404, 'mensaje' => 'Pedido no encontrado.']);
+            return redirect()->to('/cliente/mis-pedidos')
+                ->with('error', 'Pedido no encontrado.');
         }
 
-        return $this->response->setJSON([
-            'status' => 200,
-            'mensaje' => 'Detalle obtenido.',
-            'data' => $pedido,
+        $pedidoRaw = $pedidoModel->find($id);
+        $archivoModel = new ArchivoModel();
+
+        $archivos = [
+            'entradas' => $archivoModel->listarEntradas($pedidoRaw['idformpedido']),
+            'entregables' => $archivoModel->listarEntregables($id),
+        ];
+
+        return view('cliente/detalle', [
+            'titulo' => 'Detalle del Pedido',
+            'pedido' => $pedido,
+            'archivos' => $archivos,
+            'css_extra' => '<link rel="stylesheet" href="' . base_url('recursos/styles/paginas/detalle-pedido.css') . '">',
         ]);
     }
 
@@ -70,9 +80,9 @@ class MisPedidosController extends Controller
     {
         // Verificar que el pedido exista
         $pedidoModel = new PedidoModel();
-        $pedido = $pedidoModel->detallePedido($idPedido);
+        $pedidoRaw = $pedidoModel->detallePedido($idPedido);
 
-        if (!$pedido) {
+        if (!$pedidoRaw) {
             return $this->response->setStatusCode(404)->setJSON([
                 'status' => 404,
                 'mensaje' => 'Pedido no encontrado.',
