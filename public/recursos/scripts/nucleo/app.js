@@ -69,7 +69,9 @@ document.addEventListener('click', function(e) {
 
 //Scroll horizontal con la rueda del mouse en el menú de empresas
 const empScroll = document.getElementById('empScroll');
-empScroll.addEventListener('wheel', function (e) {
-    e.preventDefault();
-    empScroll.scrollLeft += e.deltaY;
-}, { passive: false });
+if (empScroll) {
+    empScroll.addEventListener('wheel', function (e) {
+        e.preventDefault();
+        empScroll.scrollLeft += e.deltaY;
+    }, { passive: false });
+}
