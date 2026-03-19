@@ -137,7 +137,7 @@
 /* Animación de parpadeo para la alerta roja */
 @keyframes parpadeo { 0%,100%{opacity:1} 50%{opacity:.2} }
 
-/* ── EMPRESAS LIST ── */
+/* ── LISTADO DE EMPRESAS ── */
 .emp-list-item {
     background: #111;
     border: 1px solid #1e1e1e;
@@ -214,4 +214,149 @@
 .btn-sm:hover {
     border-color: #F5C400;
     color: #F5C400;
+}
+
+/* LISTADO DE USUARIOS*/
+.twrap {
+  background: #111;
+  border: 1px solid #1e1e1e;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.ttoolbar {
+  padding: 12px 16px;
+  border-bottom: 1px solid #1e1e1e;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tsearch {
+  width: 240px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #1e1e1e;
+  background: #0a0a0a;
+  color: #fff;
+  font-size: 13px;
+  outline: none;
+}
+
+.tsearch::placeholder {
+  color: rgba(255, 255, 255, .4);
+}
+
+.btn-add {
+  background: #F5C400;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: #000;
+  cursor: pointer;
+}
+
+.btn-add:hover {
+  background: #ffd33d;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg);
+  border: 1px solid #1e1e1e;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #1e1e1e;
+  color: rgba(255, 255, 255, .75);
+  font-size: 13px;
+  background: transparent;
+}
+.table thead {
+  background: #0a0a0a;
+}
+
+.table th {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgb(255, 255, 255);
+}
+
+.table tr:hover td {
+  background: rgba(255, 255, 255, .03);
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.td-main {
+  color: #fff;
+  font-weight: 600;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.p-done {
+  background: rgba(34, 197, 94, .12);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, .25);
+}
+
+.p-cancel {
+  background: rgba(239, 68, 68, .12);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, .25);
+}
+
+.p-admin {
+  background: rgba(245, 196, 0, .12);
+  color: #F5C400;
+  border: 1px solid rgba(245, 196, 0, .25);
+}
+
+.p-resp {
+  background: rgba(192, 132, 252, .12);
+  color: #c084fc;
+  border: 1px solid rgba(192, 132, 252, .25);
+}
+
+.p-cli {
+  background: rgba(96, 165, 250, .12);
+  color: #60a5fa;
+  border: 1px solid rgba(96, 165, 250, .25);
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, .15);
+  font-size: 11px;
+  color: rgba(255, 255, 255, .75);
+  background: transparent;
+  cursor: pointer;
+}
+
+.btn-sm:hover {
+  border-color: rgba(245, 196, 0, .7);
+  color: #F5C400;
 }
