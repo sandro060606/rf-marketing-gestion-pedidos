@@ -96,50 +96,47 @@
                         </td>
                     </tr>
                 <?php else: ?>
+                    <?php $numero = count($pedidos); ?>
                     <?php foreach ($pedidos as $pedido): ?>
-                        <tr>
-                            <td style="color:#555; font-size:11px;">#<?= $pedido['id'] ?></td>
+                        <tr data-numero="<?= $numero ?>">
+                            <td style="color:#555; font-size:11px;">#<?= $numero-- ?></td>
 
                             <td>
-                                    <?php if ($pedido['titulo']): ?>
+                                <?php if ($pedido['titulo']): ?>
                                     <span style="font-weight:600; font-size:13px;">
-                                            <?= esc($pedido['titulo']) ?>
+                                        <?= esc($pedido['titulo']) ?>
                                     </span>
-                                    <?php else: ?>
-                                    <!-- El admin aún no procesó este pedido -->
+                                <?php else: ?>
                                     <span style="color:#777; font-style:italic">
                                         Pendiente de revisión
                                     </span>
-                                    <?php endif; ?>
+                                <?php endif; ?>
                             </td>
 
                             <td>
                                 <span class="area-btn" style="cursor:default;">
-                                        <?= esc($pedido['servicio']) ?>
+                                    <?= esc($pedido['servicio']) ?>
                                 </span>
                             </td>
 
-                            <!-- str_replace convierte 'por_aprobar' → 'Por Aprobar' -->
                             <td>
                                 <span class="badge-estado estado-<?= $pedido['estado'] ?>">
-                                        <?= ucwords(str_replace('_', ' ', $pedido['estado'])) ?>
+                                    <?= ucwords(str_replace('_', ' ', $pedido['estado'])) ?>
                                 </span>
                             </td>
 
-                            <!-- null si el admin aún no asignó prioridad -->
                             <td>
-                                    <?php if ($pedido['prioridad']): ?>
+                                <?php if ($pedido['prioridad']): ?>
                                     <span class="badge-prio prio-<?= $pedido['prioridad'] ?>">
-                                            <?= ucfirst($pedido['prioridad']) ?>
+                                        <?= ucfirst($pedido['prioridad']) ?>
                                     </span>
-                                    <?php else: ?>
+                                <?php else: ?>
                                     <span style="color:#555;">—</span>
-                                    <?php endif; ?>
+                                <?php endif; ?>
                             </td>
 
-                            <!-- Recorta timestamp → solo fecha -->
                             <td style="color:#777; font-size:11px;">
-                                    <?= substr($pedido['fechacreacion'], 0, 10) ?>
+                                <?= substr($pedido['fechacreacion'], 0, 10) ?>
                             </td>
 
                             <td>
@@ -156,12 +153,22 @@
     </div>
 </div>
 
-<!-- Buscador en tiempo real sin librerías externas -->
+<!-- Buscador en tiempo real -->
 <script>
     document.getElementById('buscador').addEventListener('keyup', function () {
-        const termino = this.value.toLowerCase();
+        const termino = this.value.trim().toLowerCase();
         document.querySelectorAll('#tablaPedidos tbody tr').forEach(function (fila) {
-            fila.style.display = fila.textContent.toLowerCase().includes(termino) ? '' : 'none';
+            // Si el término es solo un número, buscar SOLO por número de pedido del cliente
+            if (/^\d+$/.test(termino)) {
+                const numero = fila.dataset.numero || '';
+                fila.style.display = numero === termino ? '' : 'none';
+            } else {
+                // Si es texto, buscar en título, servicio y estado
+                const titulo = fila.querySelector('td:nth-child(2)')?.textContent.toLowerCase() || '';
+                const servicio = fila.querySelector('td:nth-child(3)')?.textContent.toLowerCase() || '';
+                const estado = fila.querySelector('td:nth-child(4)')?.textContent.toLowerCase() || '';
+                fila.style.display = (titulo.includes(termino) || servicio.includes(termino) || estado.includes(termino)) ? '' : 'none';
+            }
         });
     });
 </script>
