@@ -1,10 +1,3 @@
-<?php
-// ARCHIVO: app/Views/cliente/nuevo-pedido.php
-// Hereda: plantillas/cliente.php
-// Recibe: $servicios (array desde ServicioModel)
-// Pantalla 0 — El cliente elige el tipo de servicio antes del wizard
-?>
-
 <?= $this->extend('plantillas/cliente') ?>
 <?= $this->section('contenido') ?>
 
@@ -28,6 +21,7 @@
         <div class="aviso-items">
             <span><i class="bi bi-clock"></i> Adaptación de Arte — <strong>2 días hábiles</strong></span>
             <span><i class="bi bi-clock"></i> Creación de Arte — <strong>4 días hábiles</strong></span>
+            <span><i class="bi bi-clock"></i> Creación de Video — <strong>mínimo 7 días hábiles</strong></span>
             <span><i class="bi bi-clock"></i> Video / Editorial — <strong>mínimo 7 días hábiles</strong></span>
         </div>
         <p class="aviso-sub" style="font-size:13px; color:#aaa;">

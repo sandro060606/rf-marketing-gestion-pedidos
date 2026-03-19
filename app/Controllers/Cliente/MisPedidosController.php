@@ -48,7 +48,7 @@ class MisPedidosController extends Controller
             return redirect()->to('/login');
         }
 
-        $pedidoModel = new PedidoModel();
+        $pedidoModel  = new PedidoModel();
         $pedido = $pedidoModel->detallePedido($id);
 
         // Verificar que el pedido exista

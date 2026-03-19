@@ -30,7 +30,8 @@ class FormularioController extends Controller
     // 1. Valida campos obligatorios
     // 2. Crea el formulario en formulario_pedidos
     // 3. Crea el pedido en estado 'por_aprobar'
-    // 4. Notifica al administrador del nuevo pedido
+    // 4. Sube archivos adjuntos si los hay
+    // 5. Notifica al administrador del nuevo pedido
     public function guardar()
     {
         $idUsuario = session()->get('id');
@@ -106,6 +107,46 @@ class FormularioController extends Controller
         // Crear pedido en estado 'por_aprobar'
         $pedidoModel = new PedidoModel();
         $idPedido = $pedidoModel->crearDesdFormulario($idFormulario, (int) $post['idservicio']);
+
+        //Subir Archivos Adjuntos
+        $archivos = $this->request->getFileMultiple('archivos');
+
+        if ($archivos) {
+            $archivoModel = new ArchivoModel();
+            $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'ai', 'psd', 'mp4', 'zip'];
+            $carpetaDestino = FCPATH . 'archivos-subidos/entradas/';
+
+            foreach ($archivos as $archivo) {
+                // Saltar si el archivo no es válido (campo vacío)
+                if (!$archivo->isValid() || $archivo->getError() === UPLOAD_ERR_NO_FILE) {
+                    continue;
+                }
+
+                $extension = strtolower($archivo->getExtension());
+
+                // Saltar extensiones no permitidas silenciosamente
+                if (!in_array($extension, $extensionesPermitidas)) {
+                    continue;
+                }
+
+                // Saltar archivos mayores a 50MB
+                if ($archivo->getSize() > 50 * 1024 * 1024) {
+                    continue;
+                }
+
+                // Nombre único para evitar colisiones
+                $nombreUnico = "entrada_{$idFormulario}_" . time() . rand(100, 999) . ".{$extension}";
+
+                if ($archivo->move($carpetaDestino, $nombreUnico)) {
+                    $archivoModel->subirEntrada(
+                        $idFormulario,
+                        $archivo->getClientName(),
+                        'archivos-subidos/entradas/' . $nombreUnico,
+                        $archivo->getSize()
+                    );
+                }
+            }
+        }
 
         // Notificar al administrador (id=1) 
         // El admin verá esta notificación en su panel
