@@ -75,20 +75,6 @@ body {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .nav-item-dropdown {
     margin-bottom: 5px;
 }
@@ -97,7 +83,7 @@ body {
     max-height: 0;
     overflow: hidden;
     transition: all 0.3s ease;
-    background: rgba(0,0,0,0.2); /* Fondo un poco más oscuro para los hijos */
+    background: rgba(0,0,0,0.2); 
     border-radius: 4px;
     margin: 0 10px;
 }

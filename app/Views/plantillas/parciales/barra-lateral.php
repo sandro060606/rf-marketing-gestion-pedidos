@@ -23,8 +23,7 @@
 
     <div class="nav-sub-menu <?= (strpos($paginaActual, 'empresa') !== false) ? 'show' : '' ?>" id="menu-empresas">
  <a href="<?= site_url('admin/empresas') ?>" class="nav-enlace sub-enlace <?= ($paginaActual == 'todas_empresas') ? 'activo' : '' ?>">
-    <i class="bi bi-gem text-warning" style="font-size: 10px;"></i> Todas las Empresas
-    <span class="badget badget-purple"><?= $contador_total ?? 0 ?></span>
+    <i  style="font-size: 10px;"></i> Todas las Empresas
 </a>
 
         <?php foreach ($empresas as $emp): ?>

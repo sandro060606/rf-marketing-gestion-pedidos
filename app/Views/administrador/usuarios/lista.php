@@ -6,7 +6,6 @@
 
 <?= $this->section('contenido') ?>
 
-<div class="sec-hd">USUARIOS DEL SISTEMA</div>
 
 <div class="twrap">
   <div class="ttoolbar">
