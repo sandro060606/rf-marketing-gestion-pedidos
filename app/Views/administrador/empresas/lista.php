@@ -1,7 +1,7 @@
 <?= $this->extend('plantillas/principal') ?>  
 
 <?= $this->section('styles') ?>  <!-- Sección de estilos -->
-<link href="<?= base_url('recursos/styles/paginas/panel.css') ?>" rel="stylesheet">
+<link href="<?= base_url('recursos/styles/paginas/listado_empresas.css') ?>" rel="stylesheet">
 <?= $this->endSection() ?>
 
 <?= $this->section('contenido') ?> 
