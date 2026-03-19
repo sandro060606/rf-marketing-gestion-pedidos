@@ -35,4 +35,22 @@ class UsuarioModel extends Model
             ->get()
             ->getRowArray();                             // Una fila o null
     }
+    public function obtenerTodosConArea(): array
+{
+    return $this->db->table('usuarios u')
+        ->select('
+            u.id,
+            u.nombre,
+            u.apellidos,
+            u.usuario,
+            u.rol,
+            u.estado,
+            u.idarea,
+            a.nombre AS area
+        ')
+        ->join('areas a', 'a.id = u.idarea', 'left')
+        ->orderBy('u.nombre', 'ASC')
+        ->get()
+        ->getResultArray();
+}
 }

@@ -19,6 +19,11 @@ $routes->get('/logout', 'Autenticacion\AuthController::logout');
 $routes->group('admin', ['filter' => 'sesion'], function($routes) {
     // Panel principal / dashboard
     $routes->get('panel', 'Administrador\DashboardController::index');
+
+    // Empresas
+    $routes->get('empresas', 'Administrador\EmpresasController::index');
+    // Usuarios
+    $routes->get('usuarios', 'Administrador\UsuariosController::index');
 });
 // RESPONSABLE
 $routes->group('responsable', ['filter' => 'sesion'], function($routes) {

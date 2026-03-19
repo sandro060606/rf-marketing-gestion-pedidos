@@ -99,4 +99,19 @@ class PedidoModel extends Model
             ->get()
             ->getRowArray();
     }
+
+
+    // Cuenta pedidos por estado
+public function contarPorEstado(string $estado): int
+{
+    return $this->where('estado', $estado)->countAllResults();
+}
+
+public function contarSinAsignar(): int
+{
+    return $this->where('idempleado', null)
+                ->where('estado', 'por_aprobar')
+                ->countAllResults();
+}
+
 }
