@@ -216,6 +216,22 @@
     color: #F5C400;
 }
 
+.emp-scroll-wrap {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 8px;
+    padding-bottom: 4px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.emp-scroll-wrap::-webkit-scrollbar { display: none; }
+.emp-scroll-wrap .emp-card {
+    min-width: 280px;
+    flex-shrink: 0;
+}
+
 /* LISTADO DE USUARIOS*/
 .twrap {
   background: #111;

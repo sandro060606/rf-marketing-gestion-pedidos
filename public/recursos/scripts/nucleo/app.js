@@ -1,4 +1,3 @@
-/* Funciones disponibles en todas las páginas del admin */
 
 // Muestra un mensaje temporal en la esquina
 function mostrarToast(mensaje, tipo = 'exito') {
@@ -51,10 +50,7 @@ function filtrarTabla(input, idTbody) {
 
 
 
-
-
-
-// En tu archivo JS global o al final de la vista
+// Despligue del menú de empresas en el header
 document.addEventListener('click', function(e) {
     // Si haces clic en el botón de despliegue
     if (e.target.closest('#btn-empresas-toggle')) {
@@ -69,3 +65,11 @@ document.addEventListener('click', function(e) {
     // Si haces clic en cualquier enlace <a>, NO HACEMOS NADA. 
     // Dejamos que el navegador cambie de página solo.
 });
+
+
+//Scroll horizontal con la rueda del mouse en el menú de empresas
+const empScroll = document.getElementById('empScroll');
+empScroll.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    empScroll.scrollLeft += e.deltaY;
+}, { passive: false });
