@@ -18,6 +18,7 @@ class UsuariosController extends BaseController
     return view('administrador/usuarios/lista', [
         'paginaActual'   => 'usuarios',
         'titulo'         => 'USUARIOS',
+        'tituloPagina'  => 'USUARIOS',
         'usuarios'       => $usuarioModel->obtenerTodosConArea(),
         'empresas'       => $empresas,
         'contador_total' => count($empresas),

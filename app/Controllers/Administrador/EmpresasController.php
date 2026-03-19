@@ -15,6 +15,7 @@ class EmpresasController extends BaseController {
         return view('administrador/empresas/lista', [
             'paginaActual'   => 'todas_empresas',
             'titulo'         => 'EMPRESAS',
+            'tituloPagina'  => 'EMPRESAS',
             'empresas'       => $listado,
             'contador_total' => count($listado)
         ]);
