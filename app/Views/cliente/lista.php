@@ -120,9 +120,7 @@
                             </td>
 
                             <td>
-                                <span class="badge-estado estado-<?= $pedido['estado'] ?>">
-                                    <?= ucwords(str_replace('_', ' ', $pedido['estado'])) ?>
-                                </span>
+                                <?= badge_estado($pedido['estado']) ?>
                             </td>
 
                             <td>
@@ -153,24 +151,6 @@
     </div>
 </div>
 
-<!-- Buscador en tiempo real -->
-<script>
-    document.getElementById('buscador').addEventListener('keyup', function () {
-        const termino = this.value.trim().toLowerCase();
-        document.querySelectorAll('#tablaPedidos tbody tr').forEach(function (fila) {
-            // Si el término es solo un número, buscar SOLO por número de pedido del cliente
-            if (/^\d+$/.test(termino)) {
-                const numero = fila.dataset.numero || '';
-                fila.style.display = numero === termino ? '' : 'none';
-            } else {
-                // Si es texto, buscar en título, servicio y estado
-                const titulo = fila.querySelector('td:nth-child(2)')?.textContent.toLowerCase() || '';
-                const servicio = fila.querySelector('td:nth-child(3)')?.textContent.toLowerCase() || '';
-                const estado = fila.querySelector('td:nth-child(4)')?.textContent.toLowerCase() || '';
-                fila.style.display = (titulo.includes(termino) || servicio.includes(termino) || estado.includes(termino)) ? '' : 'none';
-            }
-        });
-    });
-</script>
+<?php $js_extra = '<script src="' . base_url('recursos/scripts/paginas/mis-pedidos.js') . '"></script>'; ?>
 
 <?= $this->endSection() ?>

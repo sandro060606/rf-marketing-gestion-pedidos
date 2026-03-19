@@ -343,3 +343,55 @@
 .servicio-desc { font-size: 12px; color: #666; margin: 0; line-height: 1.4; }
 .servicio-arrow { font-size: 22px; color: var(--card-color, #444); opacity: 0.4; transition: all 0.2s; flex-shrink: 0; }
 .servicio-card:hover .servicio-arrow { opacity: 1; transform: translateX(4px); }
+
+/* ── Zona drop archivos ──────────────────────────────────── */
+#zona-drop {
+    border: 2px dashed #2a2a2a;
+    border-radius: 8px;
+    padding: 28px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #555;
+}
+#zona-drop:hover, #zona-drop.drag-over {
+    border-color: rgba(245,196,0,0.4);
+    background: rgba(245,196,0,0.03);
+    color: #f0f0f0;
+}
+#zona-drop i { font-size: 28px; display: block; margin-bottom: 8px; }
+#zona-drop p { font-size: 13px; margin: 0; }
+#zona-drop span { color: #F5C400; }
+#zona-drop small { font-size: 11px; color: #555; }
+
+/* ── Lista de archivos ───────────────────────────────────── */
+#lista-archivos { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+
+.archivo-item {
+    background: #0a0a0a;
+    border: 1px solid #1e1e1e;
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.archivo-item-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #888;
+}
+.archivo-nombre { flex: 1; color: #f0f0f0; }
+.archivo-peso   { color: #555; font-size: 11px; }
+
+.progreso-wrap  { display: flex; align-items: center; gap: 8px; }
+.progreso-track { flex: 1; height: 4px; background: #1e1e1e; border-radius: 2px; overflow: hidden; }
+.progreso-barra { height: 100%; background: #F5C400; border-radius: 2px; transition: width 0.2s; }
+.progreso-pct   { font-size: 11px; color: #F5C400; white-space: nowrap; min-width: 32px; }
+
+.archivo-estado      { font-size: 11px; display: flex; align-items: center; gap: 5px; }
+.archivo-estado.ok   { color: #22c55e; }
+.archivo-estado.error{ color: #ef4444; }

@@ -56,4 +56,6 @@ $routes->group('cliente', ['filter' => 'sesion'], function($routes) {
 
     // Notificaciones
     $routes->get('notificaciones', 'Cliente\NotificacionesController::index');
+
+    $routes->post('subir-archivo-temp', 'Cliente\FormularioController::subirArchivoTemp');
 });

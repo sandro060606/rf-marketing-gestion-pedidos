@@ -11,6 +11,10 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&family=Outfit:wght@300;400;600;800&display=swap"
         rel="stylesheet">
+    <link href="https://releases.transloadit.com/uppy/v3.21.0/uppy.min.css" rel="stylesheet">
+    <script src="https://releases.transloadit.com/uppy/v3.21.0/uppy.min.js"></script>
+    <meta name="csrf-token" content="<?= csrf_hash() ?>">
+    <meta name="csrf-name" content="<?= csrf_token() ?>">
     <link rel="stylesheet" href="<?= base_url('recursos/styles/base/variables.css') ?>">
     <link rel="stylesheet" href="<?= base_url('recursos/styles/plantilla/cliente.css') ?>">
     <?= $css_extra ?? '' ?>

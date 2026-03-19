@@ -18,9 +18,7 @@
         </h2>
     </div>
     <!-- Badge estado -->
-    <span class="badge-estado estado-<?= $pedido['estado'] ?> ms-auto">
-        <?= ucwords(str_replace('_', ' ', $pedido['estado'])) ?>
-    </span>
+    <?= badge_estado($pedido['estado']) ?>
 </div>
 
 <!-- Grid principal -->
@@ -184,50 +182,7 @@
             </div>
         <?php endif; ?>
 
-        <!-- Archivos adjuntos (entradas) -->
-        <?php if (!empty($archivos['entradas'])): ?>
-            <div class="seccion-titulo">ARCHIVOS ADJUNTOS</div>
-            <div class="card p-3 mb-3">
-                <?php foreach ($archivos['entradas'] as $archivo): ?>
-                    <div class="archivo-fila">
-                        <i class="bi bi-paperclip" style="color:#555;"></i>
-                        <span style="font-size:12px; color:#aaa; flex:1;">
-                            <?= esc($archivo['nombre']) ?>
-                        </span>
-                        <span style="font-size:10px; color:#555; margin-right:8px;">
-                            <?= round($archivo['tamano'] / 1024) ?> KB
-                        </span>
-                        <a href="<?= base_url($archivo['ruta']) ?>" class="btn-descargar me-1" target="_blank" title="Ver">
-                            <i class="bi bi-eye"></i>
-                        </a>
-                        <a href="<?= base_url($archivo['ruta']) ?>" class="btn-descargar" download title="Descargar">
-                            <i class="bi bi-download"></i>
-                        </a>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Entregables -->
-        <?php if (!empty($archivos['entregables'])): ?>
-            <div class="seccion-titulo">ENTREGABLES</div>
-            <div class="card p-3 mb-3">
-                <?php foreach ($archivos['entregables'] as $archivo): ?>
-                    <div class="archivo-fila">
-                        <i class="bi bi-file-earmark-arrow-down-fill" style="color:#22c55e;"></i>
-                        <span style="font-size:12px; color:#aaa; flex:1;">
-                            <?= esc($archivo['nombre']) ?>
-                        </span>
-                        <a href="<?= base_url($archivo['ruta']) ?>" class="btn-descargar me-1" target="_blank" title="Ver">
-                            <i class="bi bi-eye"></i>
-                        </a>
-                        <a href="<?= base_url($archivo['ruta']) ?>" class="btn-descargar" download title="Descargar">
-                            <i class="bi bi-download"></i>
-                        </a>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
+        <?= $this->include('cliente/parciales/archivos') ?>
 
     </div>
 </div>

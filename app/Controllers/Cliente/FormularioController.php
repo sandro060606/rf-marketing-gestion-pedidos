@@ -26,14 +26,63 @@ class FormularioController extends Controller
         ]);
     }
 
+    public function formulario(int $idServicio)
+{
+    $servicioModel = new ServicioModel();
+    $servicio      = $servicioModel->find($idServicio);
+ 
+    if (!$servicio) {
+        return redirect()->to('/cliente/nuevo-pedido');
+    }
+ 
+    $esAudiovisual = (int) $servicio['id'] === 2;
+ 
+    $empresaModel = new EmpresaModel();
+    $empresa      = $empresaModel->buscarPorUsuario(session()->get('id'));
+ 
+    return view('cliente/formulario-pedido', [
+        'titulo'    => 'Nuevo Pedido',
+        'servicio'  => $servicio,
+        'empresa'   => $empresa,
+        'tipos'     => $esAudiovisual ? [
+            'Adaptación de Arte', 'Creación de Arte', 'Creación de Videos',
+            'Creación de Editorial', 'Adaptación de Editorial', 'Modificación Web',
+        ] : [
+            'Adaptación de Arte', 'Creación de Arte', 'Creación de Editorial',
+            'Adaptación de Editorial', 'Modificación Pagina Web',
+        ],
+        'canales'   => [
+            'Por correo', 'Página web', 'Redes sociales',
+            'SIGU o Aula Virtual Estudiantes', 'SIGU o Aula Virtual Docentes',
+            'Impresión física de folletos', 'Banner físico', 'Letreros',
+            'Merch para eventos específicos',
+        ],
+        'formatos'  => $esAudiovisual ? [
+            'Reels de Facebook/Instagram', 'Historia Facebook/Instagram',
+            'Reel/Historia TikTok', 'Reels de LinkedIn', 'Historia de Whatsapp',
+            'Video para Youtube', 'SIGU (comunicado)', 'Aula Virtual (Pop up)',
+            'Pantallas LED publicitarias', 'Spot publicitario para TV',
+            'Videos para proyección de eventos', 'Reels para Pauta', 'Otros',
+        ] : [
+            'Emailing', 'Post de Facebook/Instagram', 'Historia Facebook/Instagram',
+            'Historia de Whatsapp', 'Post de LinkedIn', 'SIGU (comunicado)',
+            'Aula Virtual (Pop up)', 'Wallpaper – Computadoras', 'Banner Web Portada',
+            'Volante A5', 'Afiche A4', 'Afiche A3', 'Credenciales', 'Banner 2x1',
+            'Tarjeta Personal', 'Tríptico', 'Díptico', 'Folder A4', 'Brochure',
+            'Cartilla', 'Banderola', 'Módulos', 'SMS', 'IVR', 'Marcos Selfie',
+            'Boletín', 'Guías', 'Imagen JPG - PNG', 'Otros',
+        ],
+        'css_extra' => '<link rel="stylesheet" href="' . base_url('recursos/styles/paginas/nuevo-pedido.css') . '">',
+    ]);
+}
+
     // Flujo completo:
     // 1. Valida campos obligatorios
     // 2. Crea el formulario en formulario_pedidos
     // 3. Crea el pedido en estado 'por_aprobar'
     // 4. Sube archivos adjuntos si los hay
     // 5. Notifica al administrador del nuevo pedido
-    public function guardar()
-    {
+    public function guardar() {
         $idUsuario = session()->get('id');
 
         // Obtener empresa del cliente
@@ -109,42 +158,14 @@ class FormularioController extends Controller
         $idPedido = $pedidoModel->crearDesdFormulario($idFormulario, (int) $post['idservicio']);
 
         //Subir Archivos Adjuntos
-        $archivos = $this->request->getFileMultiple('archivos');
+        // Registrar archivos subidos via AJAX (vienen como JSON en campo oculto)
+        $rutasArchivos = json_decode($post['archivos_rutas'] ?? '[]', true);
 
-        if ($archivos) {
+        if (!empty($rutasArchivos)) {
             $archivoModel = new ArchivoModel();
-            $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'ai', 'psd', 'mp4', 'zip'];
-            $carpetaDestino = FCPATH . 'archivos-subidos/entradas/';
-
-            foreach ($archivos as $archivo) {
-                // Saltar si el archivo no es válido (campo vacío)
-                if (!$archivo->isValid() || $archivo->getError() === UPLOAD_ERR_NO_FILE) {
-                    continue;
-                }
-
-                $extension = strtolower($archivo->getExtension());
-
-                // Saltar extensiones no permitidas silenciosamente
-                if (!in_array($extension, $extensionesPermitidas)) {
-                    continue;
-                }
-
-                // Saltar archivos mayores a 50MB
-                if ($archivo->getSize() > 50 * 1024 * 1024) {
-                    continue;
-                }
-
-                // Nombre único para evitar colisiones
-                $nombreUnico = "entrada_{$idFormulario}_" . time() . rand(100, 999) . ".{$extension}";
-
-                if ($archivo->move($carpetaDestino, $nombreUnico)) {
-                    $archivoModel->subirEntrada(
-                        $idFormulario,
-                        $archivo->getClientName(),
-                        'archivos-subidos/entradas/' . $nombreUnico,
-                        $archivo->getSize()
-                    );
-                }
+            foreach ($rutasArchivos as $ruta) {
+                $nombre = basename($ruta); // extrae solo el nombre del archivo
+                $archivoModel->subirEntrada($idFormulario, $nombre, $ruta, 0);
             }
         }
 
@@ -161,6 +182,23 @@ class FormularioController extends Controller
         // Éxito → redirigir a mis-pedidos con mensaje
         return redirect()->to('/cliente/mis-pedidos')
             ->with('exito', '¡Pedido enviado correctamente! Te notificaremos cuando sea revisado.');
+    }
+
+    // Subida temporal de archivos antes de crear el pedido
+    // Los archivos se vinculan al formulario después de enviarlo
+    public function subirArchivoTemp()
+    {
+        $archivo = $this->request->getFile('archivo');
+        if (!$archivo || !$archivo->isValid()) {
+            return $this->response->setStatusCode(422)->setJSON(['status' => 422, 'mensaje' => 'Archivo no válido.']);
+        }
+
+        $resultado = $this->procesarArchivo($archivo, 'temp');
+        if (!$resultado) {
+            return $this->response->setStatusCode(422)->setJSON(['status' => 422, 'mensaje' => 'Error al procesar archivo.']);
+        }
+
+        return $this->response->setStatusCode(201)->setJSON(['status' => 201, 'mensaje' => 'Archivo subido.', 'data' => $resultado]);
     }
 
     // El cliente sube archivos de referencia adjuntos al formulario de su pedido (logos, briefs, fotos, etc.)
@@ -244,24 +282,28 @@ class FormularioController extends Controller
                 'tamano' => $archivo->getSize(),
             ],
         ]);
-    }
-    public function formulario(int $idServicio)
+    }   
+    // Método privado reutilizable para validar y mover archivos
+    private function procesarArchivo($archivo, string $prefijo = 'entrada'): array|false
     {
-        $servicioModel = new ServicioModel();
-        $servicio = $servicioModel->find($idServicio);
+        $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'ai', 'psd', 'mp4', 'zip'];
+        $extension = strtolower($archivo->getExtension());
 
-        if (!$servicio) {
-            return redirect()->to('/cliente/nuevo-pedido');
-        }
+        if (!in_array($extension, $extensionesPermitidas))
+            return false;
+        if ($archivo->getSize() > 50 * 1024 * 1024)
+            return false;
 
-        $empresaModel = new EmpresaModel();
-        $empresa = $empresaModel->buscarPorUsuario(session()->get('id'));
+        $nombreUnico = "{$prefijo}_" . time() . rand(100, 999) . ".{$extension}";
+        $carpetaDestino = FCPATH . 'archivos-subidos/entradas/';
 
-        return view('cliente/formulario-pedido', [
-            'titulo' => 'Nuevo Pedido',
-            'servicio' => $servicio,
-            'empresa' => $empresa,
-            'css_extra' => '<link rel="stylesheet" href="' . base_url('recursos/styles/paginas/nuevo-pedido.css') . '">',
-        ]);
+        if (!$archivo->move($carpetaDestino, $nombreUnico))
+            return false;
+
+        return [
+            'nombre' => $archivo->getClientName(),
+            'ruta' => 'archivos-subidos/entradas/' . $nombreUnico,
+            'tamano' => $archivo->getSize(),
+        ];
     }
 }
