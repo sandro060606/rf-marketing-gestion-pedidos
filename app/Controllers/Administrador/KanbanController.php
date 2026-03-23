@@ -37,6 +37,48 @@ class KanbanController extends BaseController
             // Solo traigo pedidos de la empresa que seleccioné
             ->where('fp.idempresa', $idEmpresa);
 
+                        // Historial: completados y cancelados de la empresa
+            $historial = $db->query("
+                SELECT p.id, p.titulo, p.estado, p.fechacreacion, p.fechacompletado, p.fechacancelacion,
+                    s.nombre AS servicio, fp.area AS area_nombre,
+                    u.nombre AS empleado, u.apellidos AS empleado_ap
+                FROM pedidos p
+                JOIN formulario_pedidos fp ON fp.id = p.idformpedido
+                JOIN servicios s           ON s.id  = p.idservicio
+                LEFT JOIN usuarios u       ON u.id  = p.idempleado
+                WHERE fp.idempresa = {$idEmpresa}
+                AND p.estado IN ('completado','cancelado')
+                ORDER BY p.fechacreacion DESC
+            ")->getResultArray();
+
+            $empresa = (new EmpresaModel())->find($idEmpresa);
+            $colores = ['#e07b6b','#6bbfa0','#7b9de0','#d4a85a','#a87bd4','#5ab8d4','#c47aa8'];
+            $empresa['color'] = $colores[$empresa['id'] % count($colores)];
+
+
+            $cancelados = $db->query("
+                SELECT p.id, p.titulo, p.fechacancelacion, p.cancelacionmotivo,
+                    s.nombre AS servicio, fp.area AS area_nombre,
+                    u.nombre AS empleado, u.apellidos AS empleado_ap
+                FROM pedidos p
+                JOIN formulario_pedidos fp ON fp.id = p.idformpedido
+                JOIN servicios s           ON s.id  = p.idservicio
+                LEFT JOIN usuarios u       ON u.id  = p.idempleado
+                WHERE fp.idempresa = {$idEmpresa}
+                AND p.estado = 'cancelado'
+                ORDER BY p.fechacancelacion DESC
+            ")->getResultArray();
+
+            $stats = $db->query("
+                SELECT 
+                    COUNT(CASE WHEN p.estado::text = 'activo'      THEN 1 END) AS activos,
+                    COUNT(CASE WHEN p.estado::text = 'por_aprobar' THEN 1 END) AS por_aprobar,
+                    COUNT(CASE WHEN p.estado::text = 'completado'  THEN 1 END) AS completados
+                FROM pedidos p
+                JOIN formulario_pedidos fp ON fp.id = p.idformpedido
+                WHERE fp.idempresa = {$idEmpresa}
+            ")->getRowArray();
+
         // Como fp.area tiene texto inconsistente ("diseño", "Disecion Academica", etc.)
         // en lugar de compararlo directamente, busco por la primera palabra del área
         // Ej: "Diseño Grafico" → busco servicios que contengan "Diseño"
@@ -84,8 +126,14 @@ class KanbanController extends BaseController
             'area'         => $area,
             'columnas'     => $columnas,
             'paginaActual' => 'kanban',
+            'tituloPagina' => strtoupper($empresa['nombreempresa']) . ' — KANBAN',
             'empresas'     => (new EmpresaModel())->findAll(), // para la barra lateral
             'idEmpresa' => $idEmpresa,
+            'historial' => $historial,
+            'empresa'   => $empresa,
+            'idEmpresa' => $idEmpresa,
+            'cancelados' => $cancelados,
+            'stats'      => $stats,  
         ]);
     }
 }

@@ -56,7 +56,7 @@ class EmpresaModel extends Model
            // --- ASIGNACIÓN DE COLORES DIFERENTES ---
             $colores = ['#e07b6b', '#6bbfa0', '#7b9de0', '#d4a85a', '#a87bd4', '#5ab8d4', '#c47aa8'];
 
-             $empresa['color'] = $colores[$id % count($colores)];
+             $empresa['color'] = $colores[$empresa['id'] % count($colores)];
 
  
             // Pedidos de esta empresa via formulario_pedidos → pedidos
