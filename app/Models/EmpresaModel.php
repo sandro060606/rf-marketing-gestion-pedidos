@@ -54,7 +54,7 @@ class EmpresaModel extends Model
         foreach ($empresas as &$empresa) {
             $id = $empresa['id'];
            // --- ASIGNACIÓN DE COLORES DIFERENTES ---
-            $colores = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFA500'];
+            $colores = ['#e07b6b', '#6bbfa0', '#7b9de0', '#d4a85a', '#a87bd4', '#5ab8d4', '#c47aa8'];
 
              $empresa['color'] = $colores[$id % count($colores)];
 

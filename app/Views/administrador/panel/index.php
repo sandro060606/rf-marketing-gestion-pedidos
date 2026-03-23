@@ -48,7 +48,7 @@
     </div>
 <?php else : ?>
  
-<div class="row g-2 mb-1">
+<div class="emp-scroll-wrap mb-1" id="empScroll">
     <?php foreach ($empresas as $empresa) : ?>
     <div class="col-12 col-md-6 col-lg-4">
         <div class="emp-card h-100" <?= $empresa['color'] ?>;">

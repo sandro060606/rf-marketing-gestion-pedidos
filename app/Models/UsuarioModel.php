@@ -41,14 +41,15 @@ class UsuarioModel extends Model
         ->select('
             u.id,
             u.nombre,
-            u.apellidos,
+            u.apellidos,    
             u.usuario,
             u.rol,
             u.estado,
             u.idarea,
-            a.nombre AS area
+            COALESCE(a.nombre, e.nombreempresa) AS area
         ')
         ->join('areas a', 'a.id = u.idarea', 'left')
+        ->join('empresas e', 'e.idusuario = u.id', 'left')
         ->orderBy('u.nombre', 'ASC')
         ->get()
         ->getResultArray();

@@ -1,7 +1,7 @@
 <?= $this->extend('plantillas/principal') ?>
 
 <?= $this->section('styles') ?>
-<link href="<?= base_url('recursos/styles/paginas/panel.css') ?>" rel="stylesheet">
+<link href="<?= base_url('recursos/styles/paginas/listado_usuarios.css') ?>" rel="stylesheet">
 <?= $this->endSection() ?>
 
 <?= $this->section('contenido') ?>
@@ -32,7 +32,7 @@
           <td class="td-main"><?= esc($u['nombre'] . ' ' . $u['apellidos']) ?></td>
           <td><?= esc($u['usuario']) ?></td>
           <td>
-            <span class="pill <?= $u['rol'] === 'administrador' ? 'p-admin' : ($u['rol'] === 'responsable' ? 'p-resp' : 'p-cli') ?>">
+           <span class="pill <?= $u['rol'] === 'administrador' ? 'p-admin' : ($u['rol'] === 'responsable' ? 'p-resp' : ($u['rol'] === 'empleado' ? 'p-emp' : 'p-cli')) ?>">
               <?= ucfirst($u['rol']) ?>
             </span>
           </td>
@@ -45,7 +45,7 @@
           <td style="white-space:nowrap">
             <button class="btn-sm" onclick="window.location.href='<?= base_url('admin/usuarios/editar/'.$u['id']) ?>'">Editar</button>
             <?php if ($u['rol'] !== 'administrador') : ?>
-              <button class="btn-sm" style="margin-left:8px;border-color:#ef4444;color:#ef4444">Deshabilitar</button>
+              <button class="btn-sm btn-cancel" >Deshabilitar</button>
             <?php endif ?>
           </td>
         </tr>
