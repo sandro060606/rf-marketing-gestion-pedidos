@@ -85,7 +85,10 @@
 
             <div class="emp-areas">
                 <?php foreach ($areas as $area) : ?>
-                    <button class="area-btn"><?= esc($area['nombre']) ?></button>
+                <!-- Indicador de pasos  Al hacer click en un área, manda el id de la empresa y el id del área-->
+                    <button class="area-btn" onclick="window.location.href='<?= site_url('admin/kanban/'.$empresa['id'].'/'.$area['id']) ?>'">
+                      <?= esc($area['nombre']) ?>
+                    </button>
                 <?php endforeach ?>
             </div>
         </div> 

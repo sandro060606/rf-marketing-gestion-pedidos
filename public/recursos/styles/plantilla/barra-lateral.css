@@ -98,3 +98,5 @@ body {
 .rotate-180 {
     transform: rotate(180deg);
 }
+/* punto amarillo en nombre de las empresas en la barra lateral */
+.nav-punto { color: #F5C400; font-size: 7px; }

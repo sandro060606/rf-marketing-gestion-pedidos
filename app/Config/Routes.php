@@ -24,6 +24,8 @@ $routes->group('admin', ['filter' => 'sesion'], function($routes) {
     $routes->get('empresas', 'Administrador\EmpresasController::index');
     // Usuarios
     $routes->get('usuarios', 'Administrador\UsuariosController::index');
+    // Kanban : recibe id de empresa y id de área
+    $routes->get('kanban/(:num)/(:num)', 'Administrador\KanbanController::index/$1/$2');
 });
 // RESPONSABLE
 $routes->group('responsable', ['filter' => 'sesion'], function($routes) {

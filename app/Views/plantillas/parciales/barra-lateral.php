@@ -27,8 +27,8 @@
 </a>
 
         <?php foreach ($empresas as $emp): ?>
-            <a href="<?= base_url('admin/empresas/panel/'.$emp['id']) ?>" class="nav-enlace sub-enlace">
-                <i class="bi bi-circle-fill" style="color: <?= $emp['color'] ?>; font-size: 7px;"></i>
+           <a href="<?= site_url('admin/kanban/'.$emp['id'].'/1') ?>" class="nav-enlace sub-enlace">
+                <i class="bi bi-circle-fill nav-punto"></i>
                 <span class="text-truncate"><?= $emp['nombreempresa'] ?></span>
             </a>
         <?php endforeach; ?>
