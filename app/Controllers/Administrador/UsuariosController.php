@@ -8,7 +8,14 @@ use App\Models\EmpresaModel;
 
 class UsuariosController extends BaseController
 {
-    public function index()
+    
+   
+   /**
+    * Muestra la lista de todos los usuarios con su área o empresa asignada.
+    *
+    * @return string
+    */ 
+    public function index(): string
 {
     $usuarioModel  = new UsuarioModel();
     $empresaModel  = new EmpresaModel();

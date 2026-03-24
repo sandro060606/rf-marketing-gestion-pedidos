@@ -9,7 +9,13 @@ use App\Models\AreaModel;
 
 class DashboardController extends Controller
 {
-    public function index()
+
+   /**
+    * Muestra el dashboard con métricas y estadísticas generales.
+    * Calcula porcentajes para el gráfico donut de estados de pedidos.
+    * @return string Vista del panel principal  
+    */  
+    public function index():string
     {
         $pedidoModel  = new PedidoModel();
         $empresaModel = new EmpresaModel();

@@ -9,8 +9,16 @@ class EmpresaModel extends Model
     protected $table      = 'empresas';
     protected $primaryKey = 'id';
     protected $returnType = 'array';
+    protected $allowedFields = ['idusuario','nombreempresa','ruc','correo','telefono'];
 
-    // GET: Buscar empresa por id del usuario (representante)
+
+    /**
+     * Busca la empresa asociada a un usuario (representante).
+     *
+     * @param integer $idUsuario
+     * @return array|null
+     */
+    
     public function buscarPorUsuario(int $idUsuario): array|null
     {
         return $this->db->table('empresas e')
@@ -21,7 +29,12 @@ class EmpresaModel extends Model
             ->getRowArray();
     }
 
-    // GET: Listar todas las empresas con su representante
+    /**
+     * Lista todas las empresas junto con los datos de su representante.
+     *
+     * @return array
+     */
+    
     public function listarTodas(): array
     {
         return $this->db->table('empresas e')
@@ -36,19 +49,30 @@ class EmpresaModel extends Model
             ->get()
             ->getResultArray();
             }
-    protected $allowedFields = ['idusuario','nombreempresa','ruc','correo','telefono'];
 
-    // Trae todas las empresas con el nombre correcto de columna
+
+    /**
+     * Retorna todas las empresas con campos básicos.
+     * Trae todas las empresas con el nombre correcto de columna
+     * @return array
+     */
     public function obtenerTodas(): array
     {
         return $this->select('id, nombreempresa, ruc, correo, telefono')
                     ->findAll();
     }
-// Para el dashboard: empresas con conteo de pedidos por estado
+
+    /**
+     * Retorna todas las empresas con estadísticas de pedidos por estado.
+     * Incluye color, inicial e conteos para el dashboard.
+     * @return array Empresas con stats: por_aprobar, activos, completados, pendientes, total
+     */
+
     public function obtenerConStats(): array
     {
         $db = \Config\Database::connect();
  
+        //Trae todas las empresas reales de la tabla
         $empresas = $this->select('id, nombreempresa, ruc, correo, telefono')->findAll();
  
         foreach ($empresas as &$empresa) {
@@ -64,6 +88,7 @@ class EmpresaModel extends Model
                      INNER JOIN formulario_pedidos fp ON fp.id = p.idformpedido
                      WHERE fp.idempresa = {$id}";
  
+            //Cuenta pedidos reales por estado
             $empresa['por_aprobar'] = (int) $db->query($base . " AND p.estado = 'por_aprobar'")->getRow()->total;
             $empresa['activos']     = (int) $db->query($base . " AND p.estado = 'en_proceso'")->getRow()->total;
             $empresa['completados'] = (int) $db->query($base . " AND p.estado = 'completado'")->getRow()->total;

@@ -8,6 +8,13 @@ use App\Models\EmpresaModel;
 
 class KanbanController extends BaseController
 {
+    /**
+     * Muestra el tablero Kanban de una empresa filtrado por área.
+     * Incluye pedidos activos, historial, cancelados y estadísticas.
+     * @param integer $idEmpresa
+     * @param integer $idArea
+     * @return string Vista renderizada del kanban
+     */
     public function index(int $idEmpresa, int $idArea): string
     {
         $db = \Config\Database::connect();
@@ -37,7 +44,7 @@ class KanbanController extends BaseController
             // Solo traigo pedidos de la empresa que seleccioné
             ->where('fp.idempresa', $idEmpresa);
 
-                        // Historial: completados y cancelados de la empresa
+            // Historial: completados y cancelados de la empresa
             $historial = $db->query("
                 SELECT p.id, p.titulo, p.estado, p.fechacreacion, p.fechacompletado, p.fechacancelacion,
                     s.nombre AS servicio, fp.area AS area_nombre,

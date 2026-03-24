@@ -11,8 +11,13 @@ class UsuarioModel extends Model
     protected $primaryKey = 'id';       // Clave primaria
     protected $returnType = 'array';    // Retorna arrays, no objetos
 
-    // LOGIN: Busca usuario activo por nombre de usuario
-    // Retorna: array con todos los datos | null si no existe
+    /**
+     * Busca un usuario activo por su nombre de usuario.
+     * Incluye el nombre del área mediante JOIN con la tabla areas.
+     * @param string $usuario Nombre de usuario a buscar
+     * @return array|null Datos del usuario o null si no existe
+     */
+
     public function buscarPorUsuario(string $usuario): array|null
     {
         return $this->db->table('usuarios u')
@@ -35,6 +40,12 @@ class UsuarioModel extends Model
             ->get()
             ->getRowArray();                             // Una fila o null
     }
+
+    /**
+     * Retorna todos los usuarios con su área o empresa asignada.
+     * Usa COALESCE para mostrar el área si es empleado o la empresa si es cliente.
+     * @return array Lista de usuarios con área o empresa incluida
+     */
     public function obtenerTodosConArea(): array
 {
     return $this->db->table('usuarios u')
